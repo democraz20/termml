@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 colored = "2.0.0"
 figlet-rs = "0.1.4"
-easy-scraper = "0.2.0"
+smallvec = "1.10.0"
