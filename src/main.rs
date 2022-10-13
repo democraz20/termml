@@ -1,6 +1,14 @@
 use colored::*;
 use smallvec::{SmallVec, smallvec};
 
+//tracking memory usage
+use cap::Cap;
+use std::alloc;
+
+#[global_allocator]
+static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
+
+
 #[derive(Debug)]
 struct TextFormat {
     tag: String,
@@ -13,6 +21,7 @@ struct TextFormat {
 
 fn main() {
     //reserve tag : "body" to wrap the whole thing and maybe "head"
+    // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
     let html_text = r#"
     <body>
         Hello, World!
@@ -34,6 +43,7 @@ fn main() {
     // println!("class=\"{}\"", ms[0]["class_name"]);
     println!("{}, {}!", "Hello".red(), "World".green().bold());
     process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
+    println!("Currently allocated: {}B", ALLOCATOR.allocated());
 }
 //input will be ex: <div>text</div>
 fn process_text(text: String) -> () {
