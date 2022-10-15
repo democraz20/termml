@@ -42,10 +42,19 @@ fn main() {
     // let pat = Pattern::new(r#"<div class="{{class_name}}">{{mes}}</div>"#).unwrap();
     // println!("class=\"{}\"", ms[0]["class_name"]);
     println!("{}, {}!", "Hello".red(), "World".green().bold());
-    process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
-    println!("Currently allocated: {}B", ALLOCATOR.allocated());
+    let text = r#"<div>hello</div><a>world</a><b>!</b>"#;
+    println!("{:?}", split_tags(text.to_string()));
+    // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
+    println!("main|Currently allocated: {}B", ALLOCATOR.allocated());
 }
 //input will be ex: <div>text</div>
+
+fn split_tags(text: String) -> Vec<String> {
+    let split = text.split("><");
+    println!("split_tags|Currently allocated: {}B", ALLOCATOR.allocated());
+    split.map(String::from).collect::<Vec<String>>()
+}
+
 fn process_text(text: String) -> () {
     let split = text.split("<");
     //at most a line of it would only have 3 items (assuming there's no "<" in the text itself)
@@ -73,4 +82,5 @@ fn process_text(text: String) -> () {
     let final_tag = tag[0].clone();
     //div class="test" link="github.com"
     println!("tag: '{}' text: '{}'", final_tag, final_text);
+    println!("process_text|Currently allocated: {}B", ALLOCATOR.allocated());
 }
