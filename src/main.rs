@@ -45,13 +45,13 @@ fn main() {
     let text = r#"<div>hello</div><a>world</a><b>!</b>"#;
     println!("{:?}", split_tags(text.to_string()));
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
-    println!("main|Currently allocated: {}B", ALLOCATOR.allocated());
+    printallocd("main");
 }
 //input will be ex: <div>text</div>
 
 fn split_tags(text: String) -> Vec<String> {
     let split = text.split("><");
-    println!("split_tags|Currently allocated: {}B", ALLOCATOR.allocated());
+    printallocd("split_tags");
     split.map(String::from).collect::<Vec<String>>()
 }
 
@@ -81,6 +81,9 @@ fn process_text(text: String) -> () {
     
     let final_tag = tag[0].clone();
     //div class="test" link="github.com"
-    println!("tag: '{}' text: '{}'", final_tag, final_text);
-    println!("process_text|Currently allocated: {}B", ALLOCATOR.allocated());
+    printallocd("process_text");
+}
+
+fn printallocd(header: &str) -> () {
+    println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());  
 }
