@@ -43,7 +43,7 @@ fn main() {
     // println!("class=\"{}\"", ms[0]["class_name"]);
     println!("{}, {}!", "Hello".red(), "World".green().bold());
     let text = r#"<div>hello</div><a>world</a><b>!</b>"#;
-    println!("{:?}", split_tags(text.to_string()));
+    println!("split_tags:{:?}", split_tags(text.to_string()));
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
     printallocd("main");
 }
@@ -52,7 +52,28 @@ fn main() {
 fn split_tags(text: String) -> Vec<String> {
     let split = text.split("><");
     printallocd("split_tags");
-    split.map(String::from).collect::<Vec<String>>()
+    let mut untreated_list = split.map(String::from).collect::<Vec<String>>();
+    if untreated_list.len() >= 3 {
+        //reserve
+        let first = untreated_list[0].clone()+">";
+        let last = "<".to_string()+&untreated_list[untreated_list.len()-1].clone();
+        println!("first:'{}' second:'{}'", first, last);
+        //remove the first and last items so things can iterate flawlessly
+        untreated_list.remove(0);
+        untreated_list.remove(untreated_list.len()-1);
+        for i in 0..untreated_list.len() { 
+            //loop with the number of items instead
+            untreated_list[i] = "<".to_string()+&untreated_list[i]+&">".to_string();
+            println!("untreated_list[{}]:{:?}",i , untreated_list[i]);
+        }
+    } else if untreated_list.len() == 2 {
+
+    } else {
+        //reserve for no element
+    }
+    //list will never have 1 item in it
+    //either more or less (none or more)
+    vec![]
 }
 
 fn process_text(text: String) -> () {
@@ -85,5 +106,7 @@ fn process_text(text: String) -> () {
 }
 
 fn printallocd(header: &str) -> () {
+    //in the future might add a choice to see if its a release or debug
+    //to decide the printing stdout
     println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());  
 }
