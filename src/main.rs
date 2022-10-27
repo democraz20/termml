@@ -22,13 +22,13 @@ struct TextFormat {
 fn main() {
     //reserve tag : "body" to wrap the whole thing and maybe "head"
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
-    let html_text = r#"
-    <body>
-        Hello, World!
-        <div>Some div</div>
-        Goodbye
-    </body>
-    "#;
+    // let html_text = r#"
+    // <body>
+    //     Hello, World!
+    //     <div>Some div</div>
+    //     Goodbye
+    // </body>
+    // "#;
     let data = TextFormat {
         tag: "div".to_string(), 
         class: "".to_string(),
@@ -43,7 +43,8 @@ fn main() {
     // println!("class=\"{}\"", ms[0]["class_name"]);
     println!("{}, {}!", "Hello".red(), "World".green().bold());
     let text = r#"<div>hello</div><a>world</a><b>!</b>"#;
-    println!("split_tags:{:?}", split_tags(text.to_string()));
+    let splitted_tags = split_tags(text.to_string());
+    dbg!(splitted_tags);
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
     printallocd("main");
 }
@@ -55,17 +56,23 @@ fn split_tags(text: String) -> Vec<String> {
     let mut untreated_list = split.map(String::from).collect::<Vec<String>>();
     if untreated_list.len() >= 3 {
         //reserve
+        let len: usize = untreated_list.len();
         let first = untreated_list[0].clone()+">";
-        let last = "<".to_string()+&untreated_list[untreated_list.len()-1].clone();
-        println!("first:'{}' second:'{}'", first, last);
+        let last = "<".to_string()+&untreated_list[len-1].clone();
+        // println!("first:'{}' second:'{}'", first, last);
         //remove the first and last items so things can iterate flawlessly
-        untreated_list.remove(0);
-        untreated_list.remove(untreated_list.len()-1);
-        for i in 0..untreated_list.len() { 
+        for i in 0..len { 
             //loop with the number of items instead
             untreated_list[i] = "<".to_string()+&untreated_list[i]+&">".to_string();
-            println!("untreated_list[{}]:{:?}",i , untreated_list[i]);
-        }
+        } 
+        untreated_list[0] = first.clone();
+        printallocd("68");
+        drop(first);
+        printallocd("70");
+        untreated_list[len-1] = last.clone();
+        drop(last);
+        drop(len);
+        return untreated_list;
     } else if untreated_list.len() == 2 {
 
     } else {
