@@ -10,14 +10,13 @@ static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value(
 
 
 #[derive(Debug)]
+//attributes
 struct TextFormat {
     tag: String,
-    //attributes
-    class: String,
-    link: String,
     text: String,
+    class: Option<String>,
+    link: Option<String>,
 }
-
 
 fn main() {
     //reserve tag : "body" to wrap the whole thing and maybe "head"
@@ -31,11 +30,11 @@ fn main() {
     // "#;
     let data = TextFormat {
         tag: "div".to_string(), 
-        class: "".to_string(),
-        link: "".to_string(), 
-        text: "Hello, World!".to_string()
-    };
-    println!("{}, {}, {}, {}", data.tag, data.class, data.link, data.text);
+        text: "Hello, World!".to_string(),
+        class: None,
+        link: None, 
+    }; //man, why
+    println!("{}, {}, {}, {}", data.tag, data.class.as_ref().unwrap(), data.link.as_ref().unwrap(), data.text);
 
     dbg!("{}",data);
 
@@ -83,7 +82,7 @@ fn split_tags(text: String) -> Vec<String> {
     vec![]
 }
 
-fn process_text(text: String) -> () {
+fn process_text(text: String) -> TextFormat {
     let split = text.split("<");
     //at most a line of it would only have 3 items (assuming there's no "<" in the text itself)
     let mut vec = split.clone().map(String::from).collect::<SmallVec<[String; 3]>>();
@@ -110,6 +109,12 @@ fn process_text(text: String) -> () {
     let final_tag = tag[0].clone();
     //div class="test" link="github.com"
     printallocd("process_text");
+    return TextFormat {
+        tag: final_tag,
+        text: final_text,
+        class: None,
+        link: None,
+    };
 }
 
 fn printallocd(header: &str) -> () {
