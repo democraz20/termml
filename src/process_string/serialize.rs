@@ -32,9 +32,33 @@ pub fn split_tags(text: String) -> Vec<String> {
 }
 
 fn collapse_file(text: String) -> String {
+    //assuming text has no whitespaces\unwanted elements
     let split = text.split("\n");
-    let untreated_list = split.map(String::from).collect::<Vec<String>>();
-    let joined = untreated_list.join("");
+    let mut untreated_list = split.map(String::from).collect::<Vec<String>>();
+    for i in 0..untreated_list.len() {
+        if untreated_list[i] == "" {
+            untreated_list.remove(i);
+        }   
+    }
+    let mut final_text: Vec<String> = vec![];
+    for i in &untreated_list {
+        let split = i.split("<");
+        let mut splitted = split.map(String::from).collect::<Vec<String>>();
+        if splitted.len() >= 2 {
+            splitted.remove(0);
+        }
+        let joined: String = "<".to_string()+&splitted.join("<");
+
+        //do it again
+        let split = joined.split(">");
+        let mut splitted = split.map(String::from).collect::<Vec<String>>();
+        if splitted.len() >= 2 {
+            splitted.remove(splitted.len()-1);
+        }
+        final_text.push(splitted.join(">")+">");
+    }
+    let joined = final_text.join("");
+    dbg!(&joined);
     return joined;
 }
 

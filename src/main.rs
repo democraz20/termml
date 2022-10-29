@@ -41,9 +41,10 @@ fn main() {
     dbg!("{}",data);
 
     println!("{}, {}!", "Hello".red(), "World".green().bold());
-    let text = r#"<div>hello</div>
+    let text = r"<div>hello</div>
 <a>world</a>
-<b>!</b>"#;
+<b>!</b>
+";
     let splitted_tags = serialize::split_tags(text.to_string());
     dbg!(&splitted_tags);
     for i in splitted_tags {
