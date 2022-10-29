@@ -36,20 +36,24 @@ fn main() {
         text: "Hello, World!".to_string(),
         class: "".to_string(),
         link: "".to_string(), 
-    }; //man, why
-    println!("{}, {}, {}, {}", data.tag, data.class, data.link, data.text);
+    };
 
     dbg!("{}",data);
 
     println!("{}, {}!", "Hello".red(), "World".green().bold());
-    let text = r#"<div>hello</div><a>world</a><b>!</b>"#;
+    let text = r#"<div>hello</div>
+<a>world</a>
+<b>!</b>"#;
     let splitted_tags = serialize::split_tags(text.to_string());
-    dbg!(splitted_tags);
+    dbg!(&splitted_tags);
+    for i in splitted_tags {
+        dbg!(serialize::process_text(i));
+    }
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
 }
 //input will be ex: <div>text</div>
 
-fn printallocd(header: &str) -> () {
+fn _printallocd(header: &str) -> () {
     //in the future might add a choice to see if its a release or debug
     //to decide the printing stdout
     println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());  

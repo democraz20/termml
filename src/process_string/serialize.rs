@@ -1,7 +1,7 @@
 use smallvec::SmallVec;
 
 pub fn split_tags(text: String) -> Vec<String> {
-
+    let text = collapse_file(text);
     let split = text.split("><");
     let mut untreated_list = split.map(String::from).collect::<Vec<String>>();
     if untreated_list.len() >= 3 {
@@ -28,7 +28,14 @@ pub fn split_tags(text: String) -> Vec<String> {
     }
     //list will never have 1 item in it
     //either more or less (none or more)
-    vec![]
+    return vec![]
+}
+
+fn collapse_file(text: String) -> String {
+    let split = text.split("\n");
+    let untreated_list = split.map(String::from).collect::<Vec<String>>();
+    let joined = untreated_list.join("");
+    return joined;
 }
 
 pub fn process_text(text: String) -> crate::TextFormat {
