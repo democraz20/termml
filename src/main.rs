@@ -1,5 +1,5 @@
 mod process_string;
-use crate::process_string::serialize;
+use crate::process_string::serialize::{self, is_tag};
 
 use colored::*;
 
@@ -22,6 +22,7 @@ pub struct TextFormat {
 }
 
 fn main() {
+    dbg!(is_tag("</text>".to_string()));
     //reserve tag : "body" to wrap the whole thing and maybe "head"
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
     // let html_text = r#"
@@ -43,8 +44,7 @@ fn main() {
     println!("{}, {}!", "Hello".red(), "World".green().bold());
     let text = r"<div>hello</div>
 <a>world</a>
-<b>!</b>
-";
+<b>!</b>";
     let splitted_tags = serialize::split_tags(text.to_string());
     dbg!(&splitted_tags);
     for i in splitted_tags {

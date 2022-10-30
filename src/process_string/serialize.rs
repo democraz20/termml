@@ -34,12 +34,10 @@ pub fn split_tags(text: String) -> Vec<String> {
 fn collapse_file(text: String) -> String {
     //assuming text has no whitespaces\unwanted elements
     let split = text.split("\n");
-    let mut untreated_list = split.map(String::from).collect::<Vec<String>>();
-    for i in 0..untreated_list.len() {
-        if untreated_list[i] == "" {
-            untreated_list.remove(i);
-        }   
-    }
+    let untreated_list = split.map(String::from).collect::<Vec<String>>();
+
+
+
     let mut final_text: Vec<String> = vec![];
     for i in &untreated_list {
         let split = i.split("<");
@@ -60,6 +58,24 @@ fn collapse_file(text: String) -> String {
     let joined = final_text.join("");
     dbg!(&joined);
     return joined;
+}
+
+
+//example input "<div>"
+pub fn is_tag(text: String) -> (String, String) {
+    let s = text.split("<");
+    let mut split = s.map(String::from).collect::<Vec<String>>();
+    split.remove(0); //left with "div>"
+    let joined = split.join("");
+    let s = joined.split(">");
+    let mut split = s.map(String::from).collect::<Vec<String>>();
+    split.remove(split.len()-1);
+    let joined = split.join("");
+    if joined.contains("/") {
+        let joined= joined.replace("/", "");
+        return (joined, "end".to_string());
+    }
+    return (joined, "start".to_string());
 }
 
 pub fn process_text(text: String) -> crate::TextFormat {
