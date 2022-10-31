@@ -1,13 +1,14 @@
 mod process_string;
 use crate::process_string::serialize::{self, is_tag};
 
-use colored::*;
-
 //tracking memory usage
 use cap::Cap;
 use std::alloc;
 
-// use crate::{process_string};
+use ansi_term::Colour::{
+    Red,
+    Green,
+};
 
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
@@ -22,6 +23,11 @@ pub struct TextFormat {
 }
 
 fn main() {
+    //enable ansi mode
+    // let enabled = ansi_term::enable_ansi_support();
+    // drop(enabled); //returns a result, no longer used, no error propagation, can be dropped
+    //might not even need to enable ansi at all?
+    println!("This is in Red and Green: {}, {}", Red.paint("Hello"), Green.paint("World!"));
     dbg!(is_tag("</text>".to_string()));
     //reserve tag : "body" to wrap the whole thing and maybe "head"
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
@@ -41,7 +47,7 @@ fn main() {
 
     dbg!("{}",data);
 
-    println!("{}, {}!", "Hello".red(), "World".green().bold());
+    
     let text = r"<div>hello</div>
 <a>world</a>
 <b>!</b>";
