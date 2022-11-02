@@ -1,5 +1,5 @@
 mod process_string;
-use crate::process_string::serialize::{self, is_tag};
+// use crate::process_string::serialize::{self, is_tag};
 
 //tracking memory usage
 use cap::Cap;
@@ -28,7 +28,6 @@ fn main() {
     // drop(enabled); //returns a result, no longer used, no error propagation, can be dropped
     //might not even need to enable ansi at all?
     println!("This is in Red and Green: {}, {}", Red.paint("Hello"), Green.paint("World!"));
-    dbg!(is_tag("</text>".to_string()));
     //reserve tag : "body" to wrap the whole thing and maybe "head"
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
     // let html_text = r#"
@@ -51,11 +50,6 @@ fn main() {
     let text = r"<div>hello</div>
 <a>world</a>
 <b>!</b>";
-    let splitted_tags = serialize::split_tags(text.to_string());
-    dbg!(&splitted_tags);
-    for i in splitted_tags {
-        dbg!(serialize::process_text(i));
-    }
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
 }
 //input will be ex: <div>text</div>
