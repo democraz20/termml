@@ -13,15 +13,6 @@ use ansi_term::Colour::{
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 
-#[derive(Debug)]
-//attributes
-pub struct TextFormat {
-    tag: String,
-    text: String,
-    class: String,
-    link: String,
-}
-
 fn main() {
     //enable ansi mode
     // let enabled = ansi_term::enable_ansi_support();
@@ -37,15 +28,6 @@ fn main() {
     //     Goodbye
     // </body>
     // "#;
-    let data = TextFormat {
-        tag: "div".to_string(), 
-        text: "Hello, World!".to_string(),
-        class: "".to_string(),
-        link: "".to_string(), 
-    };
-
-    dbg!("{}",data);
-
     
     let text = r"<div>hello</div>
 <a>world</a>
@@ -55,6 +37,7 @@ fn main() {
 //input will be ex: <div>text</div>
 
 fn _printallocd(header: &str) -> () {
+    //only for development : not suppossed to be in actual build AT ALL
     //in the future might add a choice to see if its a release or debug
     //to decide the printing stdout
     println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());  
