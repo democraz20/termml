@@ -1,12 +1,16 @@
-pub struct JSONmain {
+use serde_derive::Deserialize;
+
+#[derive(Deserialize)]
+pub struct TOMLmain {
     doctype: String,
-    head: JSONchild,
-    body: Vec<JSONchild>,
+    head: TOMLchild,
+    body: Vec<TOMLchild>,
 }
 
-pub struct JSONchild {
+#[derive(Deserialize)]
+pub struct TOMLchild {
     tag: String,
-    text: String,
-    class: String,
-    link: String,
+    value: String,
+    class: Option<String>,
+    link: Option<String>
 }
