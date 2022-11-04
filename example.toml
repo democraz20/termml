@@ -1,0 +1,6 @@
+doctype = "untitled"
+head = {tag = "head", value = "this is a header"}
+body = [
+    {tag = "div", value = "this is a section"},
+    {tag = "div", value = "now with a class", class = "style1"}
+]
