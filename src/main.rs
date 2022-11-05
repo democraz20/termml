@@ -28,10 +28,12 @@ fn main() {
     //     Goodbye
     // </body>
     // "#;
-    
-    let text = r"<div>hello</div>
-<a>world</a>
-<b>!</b>";
+    let parsed = match process_string::serialize::serial(){
+        Ok(s) => s,
+        Err(e) => {panic!("failed to parse : {}", e)}
+    };
+
+    dbg!(parsed);
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
 }
 //input will be ex: <div>text</div>
