@@ -28,10 +28,7 @@ fn main() {
     //     Goodbye
     // </body>
     // "#;
-    let parsed = match process_string::serialize::serial(){
-        Ok(s) => s,
-        Err(e) => {panic!("failed to parse : {}", e)}
-    };
+    let parsed = process_string::serialize::getMarkUp("example.toml");
 
     dbg!(parsed);
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
