@@ -1,0 +1,12 @@
+styles = [
+    {   
+        tag = "head",
+        background = "White"
+    },
+    {   tag = "body",
+        background = "Black",
+        foreground = "White",
+        wrap = 50,
+        margin = 1
+    }
+]

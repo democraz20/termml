@@ -1,39 +1,63 @@
+use serde::Deserialize;
 use serde_derive::Deserialize;
 use std::error::Error;
 use std::fs;
+use std::ops::Index;
 
 #[derive(Debug, Deserialize)]
-pub struct TOMLmain {
+pub struct IndexMain {
     doctype: String,
-    head: TOMLchild,
-    body: Vec<TOMLchild>,
+    head: IndexChild,
+    body: Vec<IndexChild>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct TOMLchild {
+pub struct IndexChild {
     tag: String,
     value: String,
     class: Option<String>,
     link: Option<String>
 }
 
-pub fn getMarkUp(filename: &str) -> TOMLmain {
-    match serial(filename) {
-        Ok(s) => return s,
-        //this is the error parsing struct
+pub fn get_index_mark_up(filename: &str) -> IndexMain {
+    let file = match fs::read_to_string(filename){
+        Ok(x) => x,
         Err(e) => {
-            return TOMLmain {
+            return IndexMain {
                 doctype: String::from("TERMML"),
-                head: TOMLchild {
+                head: IndexChild {
                     tag: String::from("head"),
                     value: String::from("Error : Failed to parse termML file"),
                     class: None,
                     link: None
                 },
                 body: vec![
-                    TOMLchild {
+                    IndexChild {
                         tag: String::from("body"),
-                        value: String::from(format!("Info : {}", e)),
+                        value: String::from(format!("Filename: {}\nInfo : {}", filename, e)),
+                        class: None,
+                        link: None
+                    }
+                ]
+            }
+        }
+    };
+    match serial(&file) {
+        Ok(s) => return s,
+        //this is the error parsing struct
+        Err(e) => {
+            return IndexMain {
+                doctype: String::from("TERMML"),
+                head: IndexChild {
+                    tag: String::from("head"),
+                    value: String::from("Error : Failed to parse termML file"),
+                    class: None,
+                    link: None
+                },
+                body: vec![
+                    IndexChild {
+                        tag: String::from("body"),
+                        value: String::from(format!("Filename: {}\nInfo : {}", filename, e)),
                         class: None,
                         link: None
                     }
@@ -43,12 +67,49 @@ pub fn getMarkUp(filename: &str) -> TOMLmain {
     }
 }
 
-pub fn serial(filename: &str) -> Result<TOMLmain, Box<dyn Error>> {
-    let file = match fs::read_to_string(filename) {
-        Ok(file) => file,
-        Err(e) => return Err(Box::new(e))
-    };
-    let parse: TOMLmain = toml::from_str(&file)?;
+//should parse ANYTHING now
+fn serial<'a, T: Deserialize<'a>>(file: &'a str) 
+-> Result<T, Box<dyn Error>> {
+    // let file = match fs::read_to_string(filename) {
+    //     Ok(file) => &file,
+    //     Err(e) => return Err(Box::new(e))
+    // };
+    // {
+    //     let borrow = file;
+    //     let parse: T = toml::from_str(&borrow)?;
     
+    //     Ok(parse)
+    // }
+    let parse: T = toml::from_str(&file)?;
     Ok(parse)
+}
+
+#[derive(Debug, Deserialize)]
+pub struct StyleMain {
+    styles: Vec<StyleChild>
+}
+
+#[derive(Debug, Deserialize)]   
+pub struct StyleChild {
+    tag: String,
+    background: Option<String>,
+    foreground: Option<String>,
+    wrap: Option<u16>,
+    margin: Option<u8>,
+}
+
+pub fn get_styles_mark_up(filename: &str) -> Result<StyleMain, Box<dyn Error>> {
+    let mut file = match fs::read_to_string(filename){
+        Ok(x) => x,
+        Err(e) => {return Err(Box::new(e))}
+    };
+    file = file.replace("\n", "");
+    file = file.replace("\r", "");
+    match serial(&file) {
+        Ok(s) => return Ok(s),
+        //this is the error parsing struct
+        Err(e) => {
+            return Err(e)
+        }
+    }
 }

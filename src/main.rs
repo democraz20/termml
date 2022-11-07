@@ -13,6 +13,8 @@ use ansi_term::Colour::{
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 
+const INDEX_FILENAME: &str = "index.termml";
+
 fn main() {
     //enable ansi mode
     // let enabled = ansi_term::enable_ansi_support();
@@ -28,9 +30,17 @@ fn main() {
     //     Goodbye
     // </body>
     // "#;
-    let parsed = process_string::serialize::getMarkUp("example.toml");
+    let parsed = process_string::serialize::get_index_mark_up(INDEX_FILENAME);
+    let styles = match process_string::serialize::get_styles_mark_up("styles.termml") {
+        Ok(styles) => styles,
+        Err(e) => {
+            panic!("failed to serialize styles") //return an empty stylesheet here ad log for error
+        }
+    };
 
     dbg!(parsed);
+    dbg!(styles);
+    // dbg!(styles);
     // process_text(r#"<div class="test" link="github.com">text<waow></div>"#.to_string());
 }
 //input will be ex: <div>text</div>
