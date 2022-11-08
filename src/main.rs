@@ -34,10 +34,10 @@ fn main() {
     let styles = match process_string::serialize::get_styles_mark_up("styles.termml") {
         Ok(styles) => styles,
         Err(e) => {
-            panic!("failed to serialize styles") //return an empty stylesheet here ad log for error
+            panic!("failed to serialize styles : {}", e) //return an empty stylesheet here ad log for error
         }
     };
-
+    println!("{}", parsed.doctype);
     dbg!(parsed);
     dbg!(styles);
     // dbg!(styles);

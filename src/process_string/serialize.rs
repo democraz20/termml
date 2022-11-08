@@ -6,17 +6,17 @@ use std::ops::Index;
 
 #[derive(Debug, Deserialize)]
 pub struct IndexMain {
-    doctype: String,
-    head: IndexChild,
-    body: Vec<IndexChild>,
+    pub doctype: String,
+    pub head: IndexChild,
+    pub body: Vec<IndexChild>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct IndexChild {
-    tag: String,
-    value: String,
-    class: Option<String>,
-    link: Option<String>
+    pub tag: String,
+    pub value: String,
+    pub class: Option<String>,
+    pub link: Option<String>
 }
 
 pub fn get_index_mark_up(filename: &str) -> IndexMain {
@@ -86,16 +86,16 @@ fn serial<'a, T: Deserialize<'a>>(file: &'a str)
 
 #[derive(Debug, Deserialize)]
 pub struct StyleMain {
-    styles: Vec<StyleChild>
+    pub styles: Vec<StyleChild>
 }
 
 #[derive(Debug, Deserialize)]   
 pub struct StyleChild {
-    tag: String,
-    background: Option<String>,
-    foreground: Option<String>,
-    wrap: Option<u16>,
-    margin: Option<u8>,
+    pub tag: String,
+    pub background: Option<String>,
+    pub foreground: Option<String>,
+    pub wrap: Option<u16>,
+    pub margin: Option<u8>,
 }
 
 pub fn get_styles_mark_up(filename: &str) -> Result<StyleMain, Box<dyn Error>> {
