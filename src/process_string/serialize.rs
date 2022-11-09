@@ -7,6 +7,7 @@ use std::ops::Index;
 #[derive(Debug, Deserialize)]
 pub struct IndexMain {
     pub doctype: String,
+    pub stylesheet: Option<String>,
     pub head: IndexChild,
     pub body: Vec<IndexChild>,
 }
@@ -31,6 +32,7 @@ pub fn get_index_mark_up(filename: &str) -> IndexMain {
                     class: None,
                     link: None
                 },
+                stylesheet: None,
                 body: vec![
                     IndexChild {
                         tag: String::from("body"),
@@ -54,6 +56,7 @@ pub fn get_index_mark_up(filename: &str) -> IndexMain {
                     class: None,
                     link: None
                 },
+                stylesheet: None,
                 body: vec![
                     IndexChild {
                         tag: String::from("body"),

@@ -31,7 +31,7 @@ fn main() {
     // </body>
     // "#;
     let parsed = process_string::serialize::get_index_mark_up(INDEX_FILENAME);
-    let styles = match process_string::serialize::get_styles_mark_up("styles.termml") {
+    let styles = match process_string::serialize::get_styles_mark_up(&parsed.stylesheet.as_ref().unwrap()) {
         Ok(styles) => styles,
         Err(e) => {
             panic!("failed to serialize styles : {}", e) //return an empty stylesheet here ad log for error
