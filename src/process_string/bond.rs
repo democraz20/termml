@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use crate::process_string::serialize::{
+use crate::static_data::structs::{
     IndexMain, StyleMain, StyleChild
 };
 
@@ -19,7 +19,7 @@ fn find_style_by_tag(find: String, from: StyleMain) -> StyleChild {
     }
 
     return StyleChild {
-        tag: "NULL".to_string(),
+        tag: "None".to_string(),
         background: None,
         foreground: None,
         wrap: None,
