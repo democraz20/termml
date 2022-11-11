@@ -4,6 +4,8 @@ use ansi_term::Colour;
 fn get_color_from_string(text: &str) -> Colour {
     let text: &str = &text.to_lowercase();
     let text: &str = &text.replace(" ", "");
+    let text: &str = &text.replace("\n", "");
+    let text: &str = &text.replace("\r", "");
     match text {
         "black" => Colour::Black,
         "red" => Colour::Red,
@@ -13,7 +15,15 @@ fn get_color_from_string(text: &str) -> Colour {
         "purple" => Colour::Purple,
         "cyan" => Colour::Cyan,
         "white" => Colour::White,
-        _ => Colour::White
+        _ => 
+        {
+            if text.contains(",") {
+                get_color_from_string(text)
+            }
+            else {
+                Colour::White
+            }
+        }
     }
 }
 
@@ -24,6 +34,9 @@ fn get_rgb_from_string(text: &str) ->
     if !vec.len() == 3 {
         return Err(Box::from("RGB values count is not 3"))
     };
+
+    //not sure about this since the string should have 
+    //been trimmed according to get_color_from_string
     for i in 0..3{
         vec[i] = vec[i].replace(" ", "");
     }
@@ -31,6 +44,14 @@ fn get_rgb_from_string(text: &str) ->
     let n2 = vec[0].parse::<u8>()?;
     let n3 = vec[0].parse::<u8>()?;
     Ok((n1, n2, n3))
+}
+
+fn get_fixed_from_string(text: &str) -> 
+    Result<u8, Box<dyn std::error::Error>> {
+    Ok(u8::MAX)
+    //u8 max is 255 
+    //xterm-256-color chart actually has 255 colors
+    //weird naming convention
 }
 
 //checking windows cmd.exe style support
