@@ -1,7 +1,6 @@
-use ansi_term::Style;
 use ansi_term::Colour;
 
-fn get_color_from_string(text: &str) -> Colour {
+pub fn get_color_from_string(text: &str) -> Colour {
     let text: &str = &text.to_lowercase();
     let text: &str = &text.replace(" ", "");
     let text: &str = &text.replace("\n", "");
@@ -17,8 +16,19 @@ fn get_color_from_string(text: &str) -> Colour {
         "white" => Colour::White,
         _ => 
         {
+            //try parsing if the text is valid xterm style
+            
             if text.contains(",") {
-                get_color_from_string(text)
+                let (n1, n2, n3) = match get_rgb_from_string(text) {
+                    Ok(v) => {
+                        v
+                    },
+                    Err(_) => {return Colour::White}
+                };
+                Colour::RGB(n1, n2, n3)
+            }
+            else if text.len() <= 3{
+                get_fixed_from_string(text)
             }
             else {
                 Colour::White
@@ -47,8 +57,11 @@ fn get_rgb_from_string(text: &str) ->
 }
 
 fn get_fixed_from_string(text: &str) -> 
-    Result<u8, Box<dyn std::error::Error>> {
-    Ok(u8::MAX)
+    Colour {
+    let n1 = match text.parse::<u8>() {
+        Ok(n) => return Colour::Fixed(n),
+        Err(e) => return Colour::White
+    };
     //u8 max is 255 
     //xterm-256-color chart actually has 255 colors
     //weird naming convention
