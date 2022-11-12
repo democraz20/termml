@@ -1,4 +1,4 @@
-use ansi_term::Colour;
+use ansi_term::{Colour, Style};
 
 pub fn get_color_from_string(text: &str) -> Colour {
     let text: &str = &text.to_lowercase();
@@ -66,6 +66,23 @@ fn get_fixed_from_string(text: &str) ->
     //xterm-256-color chart actually has 255 colors
     //weird naming convention
 }
+
+pub fn construct_styles(
+    bg: Colour, fg: Colour,
+    und: bool, bol: bool) -> Style {
+    let mut start = Style::new();
+    start = start.on(bg).fg(fg);
+    if und {
+        start = start.underline();
+    }
+    if bol {
+        start = start.bold();
+    }
+    return start;
+    // Style::new()
+}
+
+fn _something()->(){}
 
 //checking windows cmd.exe style support
 //aka Windows Command Prompt
