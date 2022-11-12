@@ -58,9 +58,9 @@ fn get_rgb_from_string(text: &str) ->
 
 fn get_fixed_from_string(text: &str) -> 
     Colour {
-    let n1 = match text.parse::<u8>() {
+    match text.parse::<u8>() {
         Ok(n) => return Colour::Fixed(n),
-        Err(e) => return Colour::White
+        Err(_) => return Colour::White
     };
     //u8 max is 255 
     //xterm-256-color chart actually has 255 colors
@@ -81,8 +81,6 @@ pub fn construct_styles(
     return start;
     // Style::new()
 }
-
-fn _something()->(){}
 
 //checking windows cmd.exe style support
 //aka Windows Command Prompt

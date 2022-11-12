@@ -1,11 +1,9 @@
-use std::collections::HashMap;
 use crate::static_data::structs::{
     IndexMain, StyleMain, StyleChild
 };
 
 fn bond_termml(content: IndexMain, style: StyleMain) -> (){
     //need to change this later to associated type
-    let mut map: HashMap<String, String> = HashMap::new();
     for i in 0..content.body.len(){
 
     }
