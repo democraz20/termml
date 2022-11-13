@@ -3,6 +3,10 @@ use crate::static_data::structs::{
     IndexChild,
 };
 
+use ansi_term::{Colour};
+
+pub const DEFAULT_ML_COLOR: Colour = Colour::White;
+
 impl IndexMain {
     pub fn new_error<T: std::fmt::Display>(filename: &str, e: T) -> IndexMain {
         IndexMain {
