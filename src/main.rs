@@ -22,6 +22,14 @@ fn main() {
     println!("This is in Red and Green: {}, {}", Colour::Red.paint("Hello"), Colour::Green.paint("World!"));
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
     let parsed = process_string::serialize::get_index_mark_up(INDEX_FILENAME);
+    
+    loop {
+        let mut In = String::new();
+        std::io::stdin().read_line(&mut In);
+        println!("color: {}, printing: {}", In, 
+        get_color_from_string(&In).paint("kill the jews"))
+    }
+
     dbg!(get_color_from_string(""));
     dbg!(parsed);
 }
