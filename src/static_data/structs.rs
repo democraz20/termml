@@ -1,20 +1,29 @@
 use serde_derive::Deserialize;
-
+use std::borrow::Cow;
+use strong_xml::{XmlRead};
 //main markup
-#[derive(Default, Debug, Deserialize)]
-pub struct IndexMain {
-    pub doctype: String,
-    pub stylesheet: Option<String>,
-    pub head: IndexChild,
-    pub body: Vec<IndexChild>,
+#[derive(XmlRead, PartialEq, Debug, Clone)]
+#[xml(tag = "termml")]
+pub struct IndexMain<'a> {
+    #[xml(text)]
+    pub doctype: Cow<'a, str>,
+    #[xml(text)]
+    pub stylesheet: Option<Cow<'a, str>>,
+    #[xml(child = "div")]
+    pub head: IndexChild<'a>,
+    #[xml(child = "div")]
+    pub body: IndexChild<'a>,
 }
 
-#[derive(Default, Debug, Deserialize)]
-pub struct IndexChild {
-    pub tag: String,
-    pub value: String,
-    pub class: Option<String>,
-    pub link: Option<String>
+#[derive(XmlRead, PartialEq, Debug, Clone)]
+#[xml(tag = "div")]
+pub struct IndexChild<'a> {
+    #[xml(attr = "class")]
+    pub class: Option<Cow<'a, str>>,
+    #[xml(attr = "link")]
+    pub link: Option<Cow<'a, str>>,
+    #[xml(text)]
+    pub value: Cow<'a, str>,
 }
 
 //styles

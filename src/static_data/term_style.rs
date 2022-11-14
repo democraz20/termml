@@ -1,6 +1,8 @@
 use ansi_term::{Colour, Style};
 
-use crate::static_data::defaults::DEFAULT_ML_COLOR;
+// use crate::static_data::defaults::DEFAULT_ML_COLOR;
+
+const DEFAULT_ML_COLOR: Colour = Colour::White;
 
 pub fn get_color_from_string(text: &str) -> Colour {
     let text: &str = &text.to_lowercase();
@@ -61,9 +63,14 @@ fn get_rgb_from_string(text: &str) ->
 fn get_fixed_from_string(text: &str) -> 
     Colour {
     match text.parse::<u8>() {
-        Ok(n) => return Colour::Fixed(n),
-        Err(_) => return DEFAULT_ML_COLOR
-    };
+        Ok(n) => {
+            if n > 255 {
+                return DEFAULT_ML_COLOR;
+            }
+            Colour::Fixed(n)
+        },
+        Err(_) => {return DEFAULT_ML_COLOR}
+    }
     //u8 max is 255 
     //xterm-256-color chart actually has 255 colors
     //weird naming convention
