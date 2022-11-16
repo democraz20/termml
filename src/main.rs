@@ -27,14 +27,6 @@ struct test_xml<'a>{
     // text: Cow<'a, str>
 }
 fn main() {
-    let style = construct_styles(
-        Colour::White, Colour::Black, true, false);
-    println!("{}", style.paint("hello style test\n newline"));
-    println!("This is in Red and Green: {}, {}", Colour::Red.paint("Hello"), Colour::Green.paint("World!"));
-    let xml_text = r#"<div attr="1"></div"#;
-    let parsed = test_xml::from_str(xml_text).unwrap();
-    dbg!(&parsed);
-    println!("{}", parsed.attr);
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
     // dbg!(get_color_from_string(""));
 }

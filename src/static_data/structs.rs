@@ -1,31 +1,51 @@
 use serde_derive::Deserialize;
 use std::borrow::Cow;
-use strong_xml::{XmlRead};
+use strong_xml::{XmlRead, XmlWrite};
 //main markup
-#[derive(XmlRead, PartialEq, Debug, Clone)]
-#[xml(tag = "termml")]
-pub struct IndexMain<'a> {
-    #[xml(text)]
-    pub doctype: Cow<'a, str>,
-    #[xml(text)]
-    pub stylesheet: Option<Cow<'a, str>>,
-    #[xml(child = "div")]
-    pub head: IndexChild<'a>,
-    #[xml(child = "div")]
-    pub body: IndexChild<'a>,
+#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[xml(tag = "main")]
+pub struct Main<'a> {
+    #[xml(child = "doctype")]
+    pub doctype: Doctype<'a>,
+    #[xml(child = "head")]
+    pub head: Head<'a>,
+    #[xml(child = "body")]
+    pub body: Body<'a>
 }
 
-#[derive(XmlRead, PartialEq, Debug, Clone)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[xml(tag = "doctype")]
+pub struct Doctype<'a> {
+    #[xml(attr="ml")]
+    pub ml: Cow<'a, str>,
+}
+
+#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[xml(tag = "head")]
+pub struct Head<'a> {
+    #[xml(child = "div")]
+    pub value: Div<'a>
+}
+
+#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[xml(tag = "body")]
+pub struct Body<'a> {
+    #[xml(child = "div")]
+    pub value: Vec<Div<'a>>
+}
+
+#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
 #[xml(tag = "div")]
-pub struct IndexChild<'a> {
+pub struct Div<'a> {
     #[xml(attr = "class")]
     pub class: Option<Cow<'a, str>>,
-    #[xml(attr = "link")]
-    pub link: Option<Cow<'a, str>>,
     #[xml(text)]
-    pub value: Cow<'a, str>,
+    pub value: Cow<'a, str>
 }
 
+
+
+//to be done with YAML or XML
 //styles
 #[derive(Debug, Deserialize)]
 pub struct StyleMain {
