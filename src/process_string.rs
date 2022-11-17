@@ -1,2 +1,2 @@
-pub mod serialize;
 pub mod bond;
+pub mod serialize;

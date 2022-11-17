@@ -1,10 +1,7 @@
 // use serde::Deserialize;
 // use std::error::Error;
 // use std::fs;
-use crate::static_data::structs::{
-    Main
-};
-
+use crate::static_data::structs::Main;
 
 // pub fn get_index_mark_up(filename: &str) -> IndexMain {
 //     let file = match fs::read_to_string(filename){
@@ -23,7 +20,7 @@ use crate::static_data::structs::{
 // }
 
 // //should parse ANYTHING now
-// fn serialize<'a, T: Deserialize<'a>>(file: &'a str) 
+// fn serialize<'a, T: Deserialize<'a>>(file: &'a str)
 // -> Result<T, Box<dyn Error>> {
 //     let parse: T = toml::from_str(&file)?;
 //     Ok(parse)

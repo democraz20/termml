@@ -10,13 +10,13 @@ pub struct Main<'a> {
     #[xml(child = "head")]
     pub head: Head<'a>,
     #[xml(child = "body")]
-    pub body: Body<'a>
+    pub body: Body<'a>,
 }
 
 #[derive(XmlWrite, XmlRead, PartialEq, Debug)]
 #[xml(tag = "doctype")]
 pub struct Doctype<'a> {
-    #[xml(attr="ml")]
+    #[xml(attr = "ml")]
     pub ml: Cow<'a, str>,
 }
 
@@ -24,14 +24,14 @@ pub struct Doctype<'a> {
 #[xml(tag = "head")]
 pub struct Head<'a> {
     #[xml(child = "div")]
-    pub value: Div<'a>
+    pub value: Div<'a>,
 }
 
 #[derive(XmlWrite, XmlRead, PartialEq, Debug)]
 #[xml(tag = "body")]
 pub struct Body<'a> {
     #[xml(child = "div")]
-    pub value: Vec<Div<'a>>
+    pub value: Vec<Div<'a>>,
 }
 
 #[derive(XmlWrite, XmlRead, PartialEq, Debug)]
@@ -40,19 +40,17 @@ pub struct Div<'a> {
     #[xml(attr = "class")]
     pub class: Option<Cow<'a, str>>,
     #[xml(text)]
-    pub value: Cow<'a, str>
+    pub value: Cow<'a, str>,
 }
-
-
 
 //to be done with YAML or XML
 //styles
 #[derive(Debug, Deserialize)]
 pub struct StyleMain {
-    pub styles: Vec<StyleChild>
+    pub styles: Vec<StyleChild>,
 }
 
-#[derive(Default, Debug, Deserialize)]   
+#[derive(Default, Debug, Deserialize)]
 pub struct StyleChild {
     pub tag: String,
     pub background: Option<String>,

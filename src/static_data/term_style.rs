@@ -19,40 +19,34 @@ pub fn get_color_from_string(text: &str) -> Colour {
         "purple" => Colour::Purple,
         "cyan" => Colour::Cyan,
         "white" => Colour::White,
-        _ => 
-        {
+        _ => {
             //try parsing if the text is valid xterm style
-            
+
             if text.contains(",") {
                 let (n1, n2, n3) = match get_rgb_from_string(text) {
-                    Ok(v) => {
-                        v
-                    },
-                    Err(_) => {return DEFAULT_ML_COLOR}
+                    Ok(v) => v,
+                    Err(_) => return DEFAULT_ML_COLOR,
                 };
                 Colour::RGB(n1, n2, n3)
-            }
-            else if text.len() <= 3{
+            } else if text.len() <= 3 {
                 get_fixed_from_string(text)
-            }
-            else {
+            } else {
                 DEFAULT_ML_COLOR
             }
         }
     }
 }
 
-fn get_rgb_from_string(text: &str) -> 
-    Result<(u8, u8, u8), Box<dyn std::error::Error>> {
+fn get_rgb_from_string(text: &str) -> Result<(u8, u8, u8), Box<dyn std::error::Error>> {
     let split = text.split(",");
     let mut vec = split.map(String::from).collect::<Vec<_>>();
     if !vec.len() == 3 {
-        return Err(Box::from("RGB values count is not 3"))
+        return Err(Box::from("RGB values count is not 3"));
     };
 
-    //not sure about this since the string should have 
+    //not sure about this since the string should have
     //been trimmed according to get_color_from_string
-    for i in 0..3{
+    for i in 0..3 {
         vec[i] = vec[i].replace(" ", "");
     }
     let n1 = vec[0].parse::<u8>()?;
@@ -61,25 +55,22 @@ fn get_rgb_from_string(text: &str) ->
     Ok((n1, n2, n3))
 }
 
-fn get_fixed_from_string(text: &str) -> 
-    Colour {
+fn get_fixed_from_string(text: &str) -> Colour {
     match text.parse::<u8>() {
         Ok(n) => {
             if n > 255 {
                 return DEFAULT_ML_COLOR;
             }
             Colour::Fixed(n)
-        },
-        Err(_) => {return DEFAULT_ML_COLOR}
+        }
+        Err(_) => return DEFAULT_ML_COLOR,
     }
-    //u8 max is 255 
+    //u8 max is 255
     //xterm-256-color chart actually has 255 colors
     //weird naming convention
 }
 
-pub fn construct_styles(
-    bg: Colour, fg: Colour,
-    und: bool, bol: bool) -> Style {
+pub fn construct_styles(bg: Colour, fg: Colour, und: bool, bol: bool) -> Style {
     let mut start = Style::new();
     start = start.on(bg).fg(fg);
     if und {
