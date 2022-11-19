@@ -2,6 +2,14 @@
 //     IndexMain, StyleMain, StyleChild
 // };
 
+use std::collections::{hash_map, HashMap};
+use ansi_term::Style;
+
+fn styles_hash() -> HashMap<String, Style> {
+    let mut map: HashMap<String, Style> = HashMap::new();
+    map
+}
+
 // fn bond_termml(content: IndexMain, style: StyleMain) -> (){
 //     //need to change this later to associated type
 //     for i in 0..content.body.len(){
