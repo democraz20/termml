@@ -15,4 +15,3 @@ strong-xml = "0.6.3"
  ```
 which could result in undesireably compile\memory usage size
 </br>
-another choice for the styles is Yaml which is a exchangable choice to toml
