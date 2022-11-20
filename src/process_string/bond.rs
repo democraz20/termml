@@ -3,11 +3,36 @@
 // };
 
 use std::collections::{hash_map, HashMap};
+use crate::static_data::structs::{StyleMain, StyleChild};
 use ansi_term::Style;
 
 fn styles_hash() -> HashMap<String, Style> {
     let mut map: HashMap<String, Style> = HashMap::new();
+    for i in get_style_sheets() {
+        
+    }
     map
+}
+
+fn parse_style_sheet(file: &str) -> StyleMain {
+    match toml::from_str(file) {
+        Ok(p) => {
+            p
+        }
+        Err(e) => {
+            StyleMain { styles: vec![ StyleChild{
+                tag: String::from("null"),
+                background: None,
+                foreground: None,
+                wrap: None,
+                margin: None
+            }]}
+        }
+    }
+}
+//get all files with .termss extension
+fn get_style_sheets() -> Vec<String> {
+    vec![]
 }
 
 // fn bond_termml(content: IndexMain, style: StyleMain) -> (){
