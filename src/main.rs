@@ -4,11 +4,12 @@ mod static_data;
 
 //tracking memory usage
 use cap::Cap;
+use process_string::bond::get_style_sheets;
 use std::alloc;
-
 use ansi_term::Colour;
 
 use std::borrow::Cow;
+use std::fs;
 use strong_xml::{XmlRead, XmlWrite};
 
 use crate::static_data::term_style::{construct_styles, get_color_from_string};
@@ -27,6 +28,7 @@ struct test_xml<'a> {
     // text: Cow<'a, str>
 }
 fn main() {
+    let vec = get_style_sheets("./".to_string());
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
     // dbg!(get_color_from_string(""));
 }
