@@ -2,9 +2,9 @@ use serde_derive::Deserialize;
 use std::borrow::Cow;
 use strong_xml::{XmlRead, XmlWrite};
 //main markup
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "main")]
-pub struct Main<'a> {
+pub struct TermmlMain<'a> {
     #[xml(child = "doctype")]
     pub doctype: Doctype<'a>,
     #[xml(child = "head")]
@@ -13,28 +13,28 @@ pub struct Main<'a> {
     pub body: Body<'a>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "doctype")]
 pub struct Doctype<'a> {
     #[xml(attr = "ml")]
     pub ml: Cow<'a, str>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "head")]
 pub struct Head<'a> {
     #[xml(child = "div")]
     pub value: Div<'a>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "body")]
 pub struct Body<'a> {
     #[xml(child = "div")]
     pub value: Vec<Div<'a>>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "div")]
 pub struct Div<'a> {
     #[xml(attr = "class")]
