@@ -7,6 +7,9 @@ use strong_xml::{XmlRead, XmlWrite};
 pub struct TermmlMain<'a> {
     #[xml(child = "doctype")]
     pub doctype: Doctype<'a>,
+    #[xml(child = "require")]
+    // pub require: Require<'a>,
+    pub require: Option<Require<'a>>,
     #[xml(child = "head")]
     pub head: Head<'a>,
     #[xml(child = "body")]
@@ -41,6 +44,19 @@ pub struct Div<'a> {
     pub class: Option<Cow<'a, str>>,
     #[xml(text)]
     pub value: Cow<'a, str>,
+}
+
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
+#[xml(tag = "require")]
+pub struct Require<'a> {
+    #[xml(child = "Stylesheet")]
+    pub stylesheet: Vec<StyleSheet<'a>>
+}
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
+#[xml(tag = "Stylesheet")]
+pub struct StyleSheet<'a> {
+    #[xml(attr = "name")]
+    pub name: Option<Cow<'a, str>>
 }
 
 //to be done with YAML or XML

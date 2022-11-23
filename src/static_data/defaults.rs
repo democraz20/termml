@@ -3,12 +3,20 @@ use crate::static_data::structs::{
     StyleChild,
     TermmlMain,
     Doctype,
-    Head, Body, Div
+    Head, Body, Div,
+    StyleSheet,
+    Require
 };
+
 impl TermmlMain<'_> {
     pub fn new_error<T: std::fmt::Display>(filename: &str, e: T) -> TermmlMain {
         TermmlMain {
             doctype: Doctype {ml: "termml".into()},
+            require: Some(Require {
+                stylesheet: vec![
+                    StyleSheet { name: Some("styles.termss".into())}
+                ]
+            }),
             head: Head {
                 value: Div {
                     class: None,
@@ -19,7 +27,7 @@ impl TermmlMain<'_> {
                 value: vec![
                     Div {
                         class: None,
-                        value: format!("Message : {}", e).into()
+                        value: format!("Message : in {} Error : {}", filename, e).into()
                     }
                 ]
             }
