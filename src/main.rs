@@ -5,12 +5,14 @@ mod static_data;
 //tracking memory usage
 use cap::Cap;
 use std::alloc;
+use std::fs;
 
 use strong_xml::{XmlWrite};
 
 
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
+use crate::process_string::bond::parse_style_sheet;
 use crate::static_data::structs::{
     StyleMain,
     StyleChild,
@@ -22,7 +24,11 @@ use crate::static_data::structs::{
 };
 fn main() {
     // ALLOCATOR.set_limit(30 * 1024 * 1024).unwrap();
-    // dbg!(get_color_from_string(""));
+    let file = fs::read_to_string("styles.termss").unwrap();
+    dbg!(
+        parse_style_sheet(file)
+    );
+
     dbg!(TermmlMain {
             doctype: Doctype {ml: "termml".into()},
             require: Some(Require {

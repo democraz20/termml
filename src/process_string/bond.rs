@@ -5,14 +5,16 @@ use crate::static_data::structs::{
 };
 use ansi_term::Style;
 
-
 fn styles_hash() -> HashMap<String, Style> {
     let mut map: HashMap<String, Style> = HashMap::new();
     map
 }
 
-fn parse_style_sheet(file: &str) -> StyleMain {
-    match toml::from_str(file) {
+pub fn parse_style_sheet(file: String) -> StyleMain {
+    let mut file = file.replace("\n", "");
+    file = file.replace("\r", "");
+
+    match toml::from_str(&file) {
         Ok(p) => {
             p
         }
