@@ -7,7 +7,7 @@ use cap::Cap;
 use std::alloc;
 use std::fs;
 
-use strong_xml::{XmlWrite};
+use hard_xml::{XmlWrite};
 
 
 #[global_allocator]

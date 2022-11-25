@@ -1,7 +1,9 @@
 use serde_derive::Deserialize;
 use std::borrow::Cow;
-use strong_xml::{XmlRead, XmlWrite};
+use hard_xml::{XmlRead, XmlWrite};
 //main markup
+
+#[allow(unused_must_use)]
 #[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "main")]
 pub struct TermmlMain<'a> {
@@ -68,7 +70,7 @@ pub struct StyleMain {
 
 #[derive(Default, Debug, Deserialize)]
 pub struct StyleChild {
-    pub tag: String,
+    pub class: String,
     pub background: Option<String>,
     pub foreground: Option<String>,
     pub wrap: Option<u16>,

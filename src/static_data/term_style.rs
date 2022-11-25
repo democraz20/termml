@@ -58,7 +58,7 @@ fn get_rgb_from_string(text: &str) -> Result<(u8, u8, u8), Box<dyn std::error::E
 fn get_fixed_from_string(text: &str) -> Colour {
     match text.parse::<u8>() {
         Ok(n) => {
-            if n > 255 {
+            if n > u8::MAX {
                 return DEFAULT_ML_COLOR;
             }
             Colour::Fixed(n)

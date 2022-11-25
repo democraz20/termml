@@ -24,6 +24,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "01af5c4fc8506204d2280509e9d57d1b41e54e587c185ac09baef30d21ae63ed"
 
 [[package]]
+name = "hard-xml"
+version = "0.6.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9902b3270d6ee1b5d136b48bc863b36d68b2a1b4795fc3528923048df186763"
+dependencies = [
+ "hard-xml-derive",
+ "jetscii",
+ "lazy_static",
+ "memchr",
+ "xmlparser",
+]
+
+[[package]]
+name = "hard-xml-derive"
+version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "880c5d4b4791c06b721b3ba3f05ebc67f0243f825c5de74bd18bd24e7daab455"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "jetscii"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -83,30 +107,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 
 [[package]]
-name = "strong-xml"
-version = "0.6.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d19fb3a618e2f1039e32317c9f525e6d45c55af704ec7c429aa74412419bebf"
-dependencies = [
- "jetscii",
- "lazy_static",
- "memchr",
- "strong-xml-derive",
- "xmlparser",
-]
-
-[[package]]
-name = "strong-xml-derive"
-version = "0.6.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92c781f499321613b112be5d9338189ef1ed19689a01edd23d923ea57ad5c7e1"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "syn"
 version = "1.0.103"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -124,10 +124,10 @@ dependencies = [
  "ansi_term",
  "cap",
  "figlet-rs",
+ "hard-xml",
  "serde",
  "serde_derive",
  "smallvec",
- "strong-xml",
  "toml",
 ]
 

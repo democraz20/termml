@@ -18,9 +18,9 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
         Ok(p) => {
             p
         }
-        Err(e) => {
+        Err(_) => {
             StyleMain { styles: vec![ StyleChild{
-                tag: String::from("null"),
+                class: String::from("null"),
                 background: None,
                 foreground: None,
                 wrap: None,
