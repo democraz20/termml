@@ -73,6 +73,8 @@ pub struct StyleChild {
     pub class: String,
     pub background: Option<String>,
     pub foreground: Option<String>,
+    pub underline: Option<bool>,
+    pub bold: Option<bool>,
     pub wrap: Option<u16>,
     pub margin: Option<u8>,
 }

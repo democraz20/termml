@@ -1,9 +1,9 @@
 styles = [
     {   
-        tag = "head",
+        class = "test1",
         background = "White"
     },
-    {   tag = "body",
+    {   class = "TEST2",
         background = "Black",
         foreground = "White",
         wrap = 50,

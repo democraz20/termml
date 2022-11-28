@@ -18,11 +18,14 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
         Ok(p) => {
             p
         }
-        Err(_) => {
+        Err(e) => {
+            println!("error while parsing: {}", e);
             StyleMain { styles: vec![ StyleChild{
                 class: String::from("null"),
                 background: None,
                 foreground: None,
+                underline: None,
+                bold: None,
                 wrap: None,
                 margin: None
             }]}
