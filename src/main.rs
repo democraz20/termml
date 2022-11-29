@@ -50,12 +50,23 @@ fn main() {
     }
 
 fn start() {
-    let file = fs::read_to_string("styles.termss").unwrap();
+    let filename = String::from("styles.termss");
+    let file = fs::read_to_string(filename.as_str()).unwrap();
+
+    let s = filename.split(".");
+    let mut t = s.clone().map(String::from).collect::<Vec<String>>();
+    t.pop();
+    let styles_namespace = t.join("."); //splitted ".", rejoin "."
+    // let styles_namespace = t[t.len()-1].clone();
+    drop(s);
+    drop(t);
+
     let styles = parse_style_sheet(file);
     let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
     for i in styles.styles {
         stylesmap.insert(
-            i.class.clone(),
+            format!("{}::{}", styles_namespace, i.class.clone()),
+            // i.class.clone(),
             i
         );
     }
