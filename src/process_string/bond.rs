@@ -1,13 +1,42 @@
-use std::collections::{hash_map, HashMap}; 
+use std::{
+    fs, collections::HashMap
+};
 use crate::static_data::structs::{
     StyleMain,
     StyleChild,
 };
 use ansi_term::Style;
 
-fn styles_hash() -> HashMap<String, Style> {
-    let mut map: HashMap<String, Style> = HashMap::new();
-    map
+pub fn styles_hash() -> HashMap<String, StyleChild> {
+
+    //imagine a getter from Require termml page
+    let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
+    let required = vec![
+        String::from("styles.termss")
+    ];
+    
+    for i in required {
+        let file = fs::read_to_string(i.as_str()).unwrap();
+    
+        let s = i.split(".");
+        let mut t = s.clone().map(String::from).collect::<Vec<String>>();
+        t.pop();
+        let styles_namespace = t.join("."); //splitted ".", rejoin "."
+        // let styles_namespace = t[t.len()-1].clone();
+        drop(s);
+        drop(t);
+    
+        let styles = parse_style_sheet(file);
+        for i in styles.styles {
+            stylesmap.insert(
+                format!("{}::{}", styles_namespace, i.class.clone()),
+                // i.class.clone(),
+                i
+            );
+        }
+    }
+    
+    return stylesmap;
 }
 
 pub fn parse_style_sheet(file: String) -> StyleMain {

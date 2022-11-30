@@ -10,7 +10,10 @@ use hard_xml::{XmlWrite};
 use cap::Cap;
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
-use crate::process_string::bond::parse_style_sheet;
+use crate::process_string::bond::{
+    parse_style_sheet,
+    styles_hash
+};
 use crate::static_data::structs::{
     StyleMain,
     StyleChild,
@@ -30,7 +33,7 @@ fn main() {
             stylesheet: vec![
                 StyleSheet { name: Some("styles.termss".into())}
                 ]
-            }),
+            }), //Require
             head: Head {
                 value: Div {
                     class: None,
@@ -50,32 +53,19 @@ fn main() {
     }
 
 fn start() {
-    let filename = String::from("styles.termss");
-    let file = fs::read_to_string(filename.as_str()).unwrap();
-
-    let s = filename.split(".");
-    let mut t = s.clone().map(String::from).collect::<Vec<String>>();
-    t.pop();
-    let styles_namespace = t.join("."); //splitted ".", rejoin "."
-    // let styles_namespace = t[t.len()-1].clone();
-    drop(s);
-    drop(t);
-
-    let styles = parse_style_sheet(file);
-    let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
-    for i in styles.styles {
-        stylesmap.insert(
-            format!("{}::{}", styles_namespace, i.class.clone()),
-            // i.class.clone(),
-            i
-        );
-    }
-    dbg!(stylesmap);
+    dbg!(styles_hash());
 }
 
-fn _printallocd(header: &str) -> () {
+fn _alloced(header: Option<&str>) -> () {
     //only for development : not suppossed to be in actual build AT ALL
     //in the future might add a choice to see if its a release or debug
     //to decide the printing stdout
-    println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());
+    match header {
+        Some(h) => {
+            println!("{} | Allocated : {} B(ytes)", h, ALLOCATOR.allocated());
+        },
+        None => {
+            println!("  | Allocated : {} B(ytes)", ALLOCATOR.allocated());
+        }
+    }
 }
