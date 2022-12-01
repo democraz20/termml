@@ -1,21 +1,60 @@
 use std::{
-    fs, collections::HashMap
+    fs, collections::HashMap, hash
 };
+
+use hard_xml::XmlRead;
 use crate::static_data::structs::{
     StyleMain,
     StyleChild,
+    TermmlMain, StyleSheet, Require
 };
 use ansi_term::Style;
 
-pub fn styles_hash() -> HashMap<String, StyleChild> {
+pub fn markup_entry(text: String) -> () {
+    let markup = match TermmlMain::from_str(text.as_str()) {
+        Ok(r) => r,
+        Err(e) =>{
+            eprintln!("error while parsing: {}", e);
+            TermmlMain::new_error("filename.termml", e)
+        }
+    };
+    let required_entry = markup.require;
+    let required = match required_entry {
+        Some(s) => {
+            s
+        },
+        None => { //needs error value for this
+            Require {
+                stylesheet: vec![
+                    StyleSheet {name: Some("styles.termss".into())}
+                ]
+            }
+        }
+    };
+    let requiredvec = required.stylesheet;
+    let hashmap = styles_hash(requiredvec);
+    dbg!(hashmap);
+    //stylesheet
+    // for i in markup.require{
+    //     //vector
+    //     let required = i.stylesheet; 
+    //     let hashmap = styles_hash(required);
+
+    //     // dbg!(required.stylesheet[0].clone());
+    // }
+    // dbg!(hashmap);
+}
+
+pub fn styles_hash(required: Vec<StyleSheet>) -> HashMap<String, StyleChild> {
 
     //imagine a getter from Require termml page
     let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
-    let required = vec![
-        String::from("styles.termss")
-    ];
+    // let required = vec![
+    //     String::from("styles.termss")
+    // ];
     
-    for i in required {
+    for stylesheet in required {
+        let i: String = stylesheet.name.unwrap().into();
         let file = fs::read_to_string(i.as_str()).unwrap();
     
         let s = i.split(".");

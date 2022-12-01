@@ -12,7 +12,7 @@ use cap::Cap;
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{
     parse_style_sheet,
-    styles_hash
+    styles_hash, markup_entry
 };
 use crate::static_data::structs::{
     StyleMain,
@@ -53,7 +53,20 @@ fn main() {
     }
 
 fn start() {
-    dbg!(styles_hash());
+    markup_entry(r#"<main>
+        <doctype ml="termml"/>
+        <require>
+            <Stylesheet name="styles.termss"/>
+        </require>
+        <head>
+            <div>Error while parsing Termml file</div>
+        </head>
+        <body>
+            <div>Message : </div>
+        </body>
+    </main>
+    "#.to_string());
+    // dbg!(styles_hash());
 }
 
 fn _alloced(header: Option<&str>) -> () {
