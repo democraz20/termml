@@ -1,6 +1,6 @@
+use hard_xml::{XmlRead, XmlWrite};
 use serde_derive::Deserialize;
 use std::borrow::Cow;
-use hard_xml::{XmlRead, XmlWrite};
 //main markup
 
 #[allow(unused_must_use)]
@@ -52,13 +52,13 @@ pub struct Div<'a> {
 #[xml(tag = "require")]
 pub struct Require<'a> {
     #[xml(child = "Stylesheet")]
-    pub stylesheet: Vec<StyleSheet<'a>>
+    pub stylesheet: Vec<StyleSheet<'a>>,
 }
 #[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "Stylesheet")]
 pub struct StyleSheet<'a> {
     #[xml(attr = "name")]
-    pub name: Option<Cow<'a, str>>
+    pub name: Option<Cow<'a, str>>,
 }
 
 //to be done with YAML or XML

@@ -1,36 +1,30 @@
 use crate::static_data::structs::{
-    StyleMain,
-    StyleChild,
-    TermmlMain,
-    Doctype,
-    Head, Body, Div,
-    StyleSheet,
-    Require
+    Body, Div, Doctype, Head, Require, StyleChild, StyleMain, StyleSheet, TermmlMain,
 };
 
 impl TermmlMain<'_> {
     pub fn new_error<T: std::fmt::Display>(filename: &str, e: T) -> TermmlMain {
         TermmlMain {
-            doctype: Doctype {ml: "termml".into()},
+            doctype: Doctype {
+                ml: "termml".into(),
+            },
             require: Some(Require {
-                stylesheet: vec![
-                    StyleSheet { name: Some("styles.termss".into())}
-                ]
+                stylesheet: vec![StyleSheet {
+                    name: Some("styles.termss".into()),
+                }],
             }),
             head: Head {
                 value: Div {
                     class: None,
-                    value: "Error while parsing Termml file".into()
+                    value: "Error while parsing Termml file".into(),
                 },
             },
             body: Body {
-                value: vec![
-                    Div {
-                        class: None,
-                        value: format!("Message : in {} Error : {}", filename, e).into()
-                    }
-                ]
-            }
+                value: vec![Div {
+                    class: None,
+                    value: format!("Message : in {} Error : {}", filename, e).into(),
+                }],
+            },
         }
     }
 }
