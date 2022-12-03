@@ -3,16 +3,12 @@ use crate::static_data::structs::{
 };
 
 impl TermmlMain<'_> {
-    pub fn new_error<T: std::fmt::Display>(filename: &str, e: T) -> TermmlMain {
+    pub fn parse_error<T: std::fmt::Display>(filename: &str, e: T) -> TermmlMain {
         TermmlMain {
             doctype: Doctype {
                 ml: "termml".into(),
             },
-            require: Some(Require {
-                stylesheet: vec![StyleSheet {
-                    name: Some("styles.termss".into()),
-                }],
-            }),
+            require: None, 
             head: Head {
                 value: Div {
                     class: None,
@@ -25,6 +21,32 @@ impl TermmlMain<'_> {
                     value: format!("Message : in {} Error : {}", filename, e).into(),
                 }],
             },
+        }
+    }
+    pub fn fetch_error<T: std::fmt::Display>(url: &str, e: T, code: u16) -> TermmlMain {
+        TermmlMain {
+            doctype: Doctype {
+                ml: "termml".into() 
+            },
+            require: None,
+            head: Head {
+                value: Div {
+                    class: None,
+                    value: "Error while fetching requested files".into()
+                },
+            },
+            body: Body {
+                value: vec![
+                    Div{
+                        class: None,
+                        value: format!("Requested URL : {}", url).into()
+                    },
+                    Div {
+                        class: None,
+                        value: format!("Status Code : {}", code).into()
+                    }
+                ]
+            }
         }
     }
 }

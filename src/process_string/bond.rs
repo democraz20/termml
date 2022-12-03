@@ -9,7 +9,7 @@ pub fn markup_entry(text: String) -> () {
         Ok(r) => r,
         Err(e) => {
             eprintln!("error while parsing: {}", e);
-            TermmlMain::new_error("filename.termml", e)
+            TermmlMain::parse_error("filename.termml", e)
         }
     };
     dbg!(&markup);
