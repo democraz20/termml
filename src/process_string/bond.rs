@@ -12,6 +12,7 @@ pub fn markup_entry(text: String) -> () {
             TermmlMain::new_error("filename.termml", e)
         }
     };
+    dbg!(&markup);
     let required_entry = markup.require;
     let required = match required_entry {
         Some(s) => s,

@@ -43,22 +43,8 @@ fn main() {
 }
 
 fn start() {
-    markup_entry(
-        r#"<main>
-        <doctype ml="termml"/>
-        <require>
-            <Stylesheet name="styles.termss"/>
-        </require>
-        <head>
-            <div>Error while parsing Termml file</div>
-        </head>
-        <body>
-            <div>Message : </div>
-        </body>
-    </main>
-    "#
-        .to_string(),
-    );
+    let markup = fs::read_to_string("index.termml").unwrap();
+    markup_entry(markup);
     // dbg!(styles_hash());
 }
 
