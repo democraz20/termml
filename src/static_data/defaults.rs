@@ -23,7 +23,9 @@ impl TermmlMain<'_> {
             },
         }
     }
-    pub fn fetch_error<T: std::fmt::Display>(url: &str, e: T, code: u16) -> TermmlMain {
+    pub fn fetch_error<T: std::fmt::Display>
+        (url: &str, e: Option<T>, code: Option<u16>)
+        -> TermmlMain {
         TermmlMain {
             doctype: Doctype {
                 ml: "termml".into() 
@@ -43,37 +45,20 @@ impl TermmlMain<'_> {
                     },
                     Div {
                         class: None,
-                        value: format!("Status Code : {}", code).into()
+                        value: match code {
+                            Some(c) => format!("Status code: {}", c).into(),
+                            None => format!("Unknown Status code").into()
+                        }
+                    },
+                    Div {
+                        class: None,
+                        value: match e {
+                            Some(r) => r.to_string().into(),
+                            None => String::from("An unknown error has occured").into()
+                        }
                     }
                 ]
             }
         }
     }
 }
-
-// use ansi_term::{Colour};
-
-// pub const DEFAULT_ML_COLOR: Colour = Colour::White;
-
-// impl IndexMain {
-//     pub fn new_error<T: std::fmt::Display>(filename: &str, e: T) -> IndexMain {
-//         IndexMain {
-//             doctype: String::from("TERMML"),
-//             head: IndexChild {
-//                 tag: String::from("head"),
-//                 value: String::from("Error : Failed to parse termML file"),
-//                 class: None,
-//                 link: None
-//             },
-//             stylesheet: None,
-//             body: vec![
-//                 IndexChild {
-//                     tag: String::from("body"),
-//                     value: String::from(format!("Filename: {}\nInfo : {}", filename, e)),
-//                     class: None,
-//                     link: None
-//                 }
-//             ]
-//         }
-//     }
-// }

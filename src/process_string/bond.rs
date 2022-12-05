@@ -28,23 +28,11 @@ pub fn markup_entry(text: String) -> () {
     let requiredvec = required.stylesheet;
     let hashmap = styles_hash(requiredvec);
     dbg!(hashmap);
-    //stylesheet
-    // for i in markup.require{
-    //     //vector
-    //     let required = i.stylesheet;
-    //     let hashmap = styles_hash(required);
-
-    //     // dbg!(required.stylesheet[0].clone());
-    // }
-    // dbg!(hashmap);
 }
 
 pub fn styles_hash(required: Vec<StyleSheet>) -> HashMap<String, StyleChild> {
     //imagine a getter from Require termml page
     let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
-    // let required = vec![
-    //     String::from("styles.termss")
-    // ];
 
     for stylesheet in required {
         let i: String = stylesheet.name.unwrap().into();
@@ -54,7 +42,6 @@ pub fn styles_hash(required: Vec<StyleSheet>) -> HashMap<String, StyleChild> {
         let mut t = s.clone().map(String::from).collect::<Vec<String>>();
         t.pop();
         let styles_namespace = t.join("."); //splitted ".", rejoin "."
-                                            // let styles_namespace = t[t.len()-1].clone();
         drop(s);
         drop(t);
 
@@ -62,7 +49,6 @@ pub fn styles_hash(required: Vec<StyleSheet>) -> HashMap<String, StyleChild> {
         for i in styles.styles {
             stylesmap.insert(
                 format!("{}::{}", styles_namespace, i.class.clone()),
-                // i.class.clone(),
                 i,
             );
         }
@@ -93,26 +79,3 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
         }
     }
 }
-// fn bond_termml(content: IndexMain, style: StyleMain) -> (){
-//     //need to change this later to associated type
-//     for i in 0..content.body.len(){
-
-//     }
-// }
-// fn find_style_by_tag(find: String, from: StyleMain) -> StyleChild {
-//     //optimization LATER
-//     for i in from.styles{
-//         if i.tag == find {
-//             return i;
-//         }
-//     }
-
-//     return StyleChild {
-//         tag: "None".to_string(),
-//         background: None,
-//         foreground: None,
-//         wrap: None,
-//         margin: None,
-//     }
-//     //for when no match is found
-// }
