@@ -3,6 +3,8 @@ mod static_data;
 mod webrequest;
 
 use hard_xml::XmlWrite;
+use ureq::{Response, Transport};
+use std::sync::mpsc::TryRecvError;
 use std::{alloc, collections::HashMap, fs};
 
 //tracking memory usage
@@ -11,13 +13,33 @@ use cap::Cap;
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
 use crate::static_data::structs::{
-    Body, Div, Doctype, Head, Require, StyleChild, StyleMain, StyleSheet, TermmlMain,
+    TermmlMain,
 };
-use crate::webrequest::request::get;
+use crate::webrequest::request::fetch;
 fn main() {
-    let url = String::from("http://127.0.0.1:5500/test.termml");
-    let g = get(url.clone());
-    dbg!(g);
+    let url = String::from("http://127.0.0.1:5500/tet.termml");
+
+    let f = match fetch(url) {
+        Ok(r) => {
+            println!("successful");
+            r
+        },
+        Err(e) => {
+            match e {
+                ureq::Error::Status(code, response) => {
+                    //Termml to_string goes here
+                    eprintln!("status error code:{code}");
+                    response.into_string().unwrap()
+                },
+                ureq::Error::Transport(transport) => {
+                    //Termml to_string goes here
+                    eprintln!("transport error");
+                    transport.to_string()
+                }
+            }
+        }
+    };
+    dbg!(f);
 }
 
 fn start() {
