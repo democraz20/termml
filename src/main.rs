@@ -12,14 +12,12 @@ use cap::Cap;
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
-use crate::static_data::structs::{
-    TermmlMain,
-};
+use crate::static_data::structs::TermmlMain;
 use crate::webrequest::request::fetch;
 fn main() {
-    let url = String::from("http://127.0.0.1:5500/tet.termml");
+    let url = String::from("http://127.0.0.1:5500/test.termml");
 
-    let f = match fetch(url) {
+    let f = match fetch(&url) {
         Ok(r) => {
             println!("successful");
             r
@@ -29,12 +27,19 @@ fn main() {
                 ureq::Error::Status(code, response) => {
                     //Termml to_string goes here
                     eprintln!("status error code:{code}");
-                    response.into_string().unwrap()
+                    TermmlMain::fetch_error(
+                        url.as_str(), Some(response.status_text()), Some(code)
+                    )
+                    .to_string().unwrap()
                 },
                 ureq::Error::Transport(transport) => {
                     //Termml to_string goes here
                     eprintln!("transport error");
-                    transport.to_string()
+                    transport.to_string();
+                    TermmlMain::fetch_error(
+                        url.as_str(), Some(transport.kind().to_string()), None
+                    )
+                    .to_string().unwrap()
                 }
             }
         }

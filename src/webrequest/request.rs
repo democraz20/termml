@@ -3,7 +3,7 @@ use ureq::Response;
 use crate::static_data::structs::TermmlMain;
 use hard_xml::XmlWrite;
 
-pub fn fetch(url: String) -> 
+pub fn fetch(url: &String) -> 
     // Result<String, ureq::Error>
     Result<String, ureq::Error>
 {
