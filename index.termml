@@ -1,6 +1,13 @@
-doctype = "untitled"
-head = {tag = "head", value = "this is a header"}
-body = [
-    {tag = "div", value = "this is a section"},
-    {tag = "div", value = "now with a class", class = "style1"}
-]
+<main>
+    <doctype ml="termml"/>
+    <require>
+        <Stylesheet name="styles.termss"/>
+    </require>
+    <head>
+        <div>Example Termml file</div>
+    </head>
+    <body>
+        <div>should have no problems parsing this</div>
+        <div>and this too</div>
+    </body>
+</main>
