@@ -2,7 +2,7 @@ mod process_string;
 mod static_data;
 mod webrequest;
 
-use hard_xml::XmlWrite;
+use hard_xml::{XmlWrite, XmlRead};
 use ureq::{Response, Transport};
 use std::sync::mpsc::TryRecvError;
 use std::{alloc, collections::HashMap, fs};
@@ -44,6 +44,12 @@ fn main() {
             }
         }
     };
+    let p = TermmlMain::from_str(f.as_str());
+    let parsed = match p {
+        Ok(r) => r,
+        Err(e) => TermmlMain::parse_error(url.as_str(), e)
+    };
+    dbg!(parsed);
     dbg!(f);
 }
 
