@@ -15,8 +15,12 @@ use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
 use crate::static_data::structs::TermmlMain;
 use crate::webrequest::request::fetch;
 fn main() {
-    let url = String::from("http://127.0.0.1:5500/test.termml");
+    start();
+}
 
+fn start() {
+    let url = String::from("http://127.0.0.1:5500/test.termml");
+    
     let f = match fetch(&url) {
         Ok(r) => {
             println!("successful");
@@ -49,13 +53,15 @@ fn main() {
         Ok(r) => r,
         Err(e) => TermmlMain::parse_error(url.as_str(), e)
     };
-    dbg!(parsed);
-    dbg!(f);
-}
-
-fn start() {
-    let markup = fs::read_to_string("index.termml").unwrap();
-    markup_entry(markup);
+    dbg!(&parsed);
+    for i in parsed.require {
+        // dbg!(i.stylesheet);
+        let s = i.stylesheet;
+        for i in s {
+            println!("Required TERMSS : {}", i.name)
+        }
+        // println!("{}", i);
+    }
     // dbg!(styles_hash());
 }
 

@@ -20,7 +20,8 @@ pub fn markup_entry(text: String) -> () {
             //needs error value for this
             Require {
                 stylesheet: vec![StyleSheet {
-                    name: Some("styles.termss".into()),
+                    // name: Some("styles.termss".into()),
+                    name: "styles.termss".into()
                 }],
             }
         }
@@ -35,7 +36,7 @@ pub fn styles_hash(required: Vec<StyleSheet>) -> HashMap<String, StyleChild> {
     let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
 
     for stylesheet in required {
-        let i: String = stylesheet.name.unwrap().into();
+        let i: String = stylesheet.name.into();
         let file = fs::read_to_string(i.as_str()).unwrap();
 
         let s = i.split(".");

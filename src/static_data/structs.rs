@@ -58,7 +58,7 @@ pub struct Require<'a> {
 #[xml(tag = "Stylesheet")]
 pub struct StyleSheet<'a> {
     #[xml(attr = "name")]
-    pub name: Option<Cow<'a, str>>,
+    pub name: Cow<'a, str>,
 }
 
 //to be done with YAML or XML
