@@ -1,5 +1,5 @@
 use hard_xml::{XmlRead, XmlWrite};
-use serde_derive::Deserialize;
+use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 //main markup
 
@@ -63,12 +63,12 @@ pub struct StyleSheet<'a> {
 
 //to be done with YAML or XML
 //styles
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StyleMain {
     pub styles: Vec<StyleChild>,
 }
 
-#[derive(Default, Debug, Deserialize)]
+#[derive(Default, Debug, Deserialize, Serialize)]
 pub struct StyleChild {
     pub class: String,
     pub background: Option<String>,

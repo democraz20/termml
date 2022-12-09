@@ -12,13 +12,18 @@ use cap::Cap;
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
-use crate::static_data::structs::TermmlMain;
+use crate::static_data::structs::{
+    TermmlMain,
+    StyleMain,
+    StyleChild
+};
 use crate::webrequest::request::fetch;
 fn main() {
     start();
 }
 
 fn start() {
+    let mut stylesmap: HashMap<String, String> = HashMap::new();
     let url = String::from("http://127.0.0.1:5500/test.termml");
     
     let f = match fetch(&url) {
@@ -58,7 +63,23 @@ fn start() {
         // dbg!(i.stylesheet);
         let s = i.stylesheet;
         for i in s {
-            println!("Required TERMSS : {}", i.name)
+            println!("Required TERMSS : {}", i.name);
+            let t = match fetch(&i.name.into()) {
+                Ok(r) => r,
+                Err(e) => {
+                    toml::to_string(&StyleMain {
+                        styles: vec![StyleChild {
+                            class: String::from("null"),
+                            background: None,
+                            foreground: None,
+                            underline: None,
+                            bold: None,
+                            wrap: None,
+                            margin: None,
+                        }],
+                    }).unwrap()
+                }
+            };
         }
         // println!("{}", i);
     }
