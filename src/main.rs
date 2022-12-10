@@ -23,9 +23,12 @@ fn main() {
 }
 
 fn start() {
-    let mut stylesmap: HashMap<String, String> = HashMap::new();
-    let url = String::from("http://127.0.0.1:5500/test.termml");
-    
+    //caching
+    let mut files: HashMap<String, String> = HashMap::new();
+    let server_url = String::from("http://127.0.0.1:5500/");
+    let url = format!("{}{}", server_url, "test.termml");
+    dbg!(&server_url);
+    dbg!(&url);
     let f = match fetch(&url) {
         Ok(r) => {
             println!("successful");
@@ -53,20 +56,27 @@ fn start() {
             }
         }
     };
-    let p = TermmlMain::from_str(f.as_str());
+    let binding = f.clone();
+    let p = TermmlMain::from_str(binding.as_str());
+    let binding = url.clone();
     let parsed = match p {
         Ok(r) => r,
-        Err(e) => TermmlMain::parse_error(url.as_str(), e)
+        Err(e) => TermmlMain::parse_error(binding.as_str(), e)
     };
     dbg!(&parsed);
+    files.insert(
+        url.clone(),
+        f
+    );
     for i in parsed.require {
         // dbg!(i.stylesheet);
         let s = i.stylesheet;
         for i in s {
             println!("Required TERMSS : {}", i.name);
-            let t = match fetch(&i.name.into()) {
+            let req_url = format!("{}{}", server_url, i.name);
+            let t = match fetch(&req_url) {
                 Ok(r) => r,
-                Err(e) => {
+                Err(_) => {
                     toml::to_string(&StyleMain {
                         styles: vec![StyleChild {
                             class: String::from("null"),
@@ -80,9 +90,15 @@ fn start() {
                     }).unwrap()
                 }
             };
+            dbg!(&t);
+            files.insert(
+                req_url,
+                t
+            );
         }
         // println!("{}", i);
     }
+    dbg!(&files);
     // dbg!(styles_hash());
 }
 
