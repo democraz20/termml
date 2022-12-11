@@ -27,6 +27,7 @@ fn start() {
     let mut files: HashMap<String, String> = HashMap::new();
     let server_url = String::from("http://127.0.0.1:5500/");
     let url = format!("{}{}", server_url, "test.termml");
+    let mut termss_vec: Vec<String> = vec![];
     dbg!(&server_url);
     dbg!(&url);
     let f = match fetch(&url) {
@@ -64,6 +65,8 @@ fn start() {
         Err(e) => TermmlMain::parse_error(binding.as_str(), e)
     };
     dbg!(&parsed);
+
+    //cache main toml file
     files.insert(
         url.clone(),
         f
@@ -91,27 +94,28 @@ fn start() {
                 }
             };
             dbg!(&t);
+
+            //cache termss files
+            if req_url.ends_with("termss") {
+                termss_vec.push(req_url.clone());
+            }
             files.insert(
                 req_url,
                 t
             );
+
         }
         // println!("{}", i);
     }
     dbg!(&files);
+    dbg!(&termss_vec);
+    _alloced("End of main");
     // dbg!(styles_hash());
 }
 
-fn _alloced(header: Option<&str>) -> () {
+fn _alloced<T: std::fmt::Display>(header: T) -> () {
     //only for development : not suppossed to be in actual build AT ALL
     //in the future might add a choice to see if its a release or debug
     //to decide the printing stdout
-    match header {
-        Some(h) => {
-            println!("{} | Allocated : {} B(ytes)", h, ALLOCATOR.allocated());
-        }
-        None => {
-            println!("  | Allocated : {} B(ytes)", ALLOCATOR.allocated());
-        }
-    }
+    println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());
 }
