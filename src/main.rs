@@ -17,7 +17,7 @@ use crate::static_data::structs::{
     StyleMain,
     StyleChild
 };
-use crate::webrequest::request::fetch;
+use crate::webrequest::request::{fetch, get_filename};
 fn main() {
     start();
 }
@@ -27,6 +27,8 @@ fn start() {
     let mut files: HashMap<String, String> = HashMap::new();
     let server_url = String::from("http://127.0.0.1:5500/");
     let url = format!("{}{}", server_url, "test.termml");
+    let filename = get_filename(&url);
+    dbg!(&filename);
     let mut termss_vec: Vec<String> = vec![];
     dbg!(&server_url);
     dbg!(&url);
@@ -88,7 +90,6 @@ fn start() {
                             underline: None,
                             bold: None,
                             wrap: None,
-                            margin: None,
                         }],
                     }).unwrap()
                 }

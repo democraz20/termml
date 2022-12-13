@@ -76,5 +76,4 @@ pub struct StyleChild {
     pub underline: Option<bool>,
     pub bold: Option<bool>,
     pub wrap: Option<u16>,
-    pub margin: Option<u8>,
 }

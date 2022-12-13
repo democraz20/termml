@@ -74,7 +74,6 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
                     underline: None,
                     bold: None,
                     wrap: None,
-                    margin: None,
                 }],
             }
         }
