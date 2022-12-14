@@ -32,7 +32,7 @@ fn start() {
     let mut termss_vec: Vec<String> = vec![];
     dbg!(&server_url);
     dbg!(&url);
-    let f = match fetch(&url) {
+    let fetched = match fetch(&url) {
         Ok(r) => {
             println!("successful");
             r
@@ -59,10 +59,10 @@ fn start() {
             }
         }
     };
-    let binding = f.clone();
-    let p = TermmlMain::from_str(binding.as_str());
+    let binding = fetched.clone();
+    let res = TermmlMain::from_str(binding.as_str());
     let binding = url.clone();
-    let parsed = match p {
+    let parsed = match res {
         Ok(r) => r,
         Err(e) => TermmlMain::parse_error(binding.as_str(), e)
     };
@@ -71,15 +71,15 @@ fn start() {
     //cache main toml file
     files.insert(
         url.clone(),
-        f
+        fetched
     );
     for i in parsed.require {
         // dbg!(i.stylesheet);
-        let s = i.stylesheet;
-        for i in s {
-            println!("Required TERMSS : {}", i.name);
-            let req_url = format!("{}{}", server_url, i.name);
-            let t = match fetch(&req_url) {
+        let stlyesheet = i.stylesheet;
+        for styleiter in stlyesheet {
+            println!("Required TERMSS : {}", styleiter.name);
+            let req_url = format!("{}{}", server_url, styleiter.name);
+            let fetched = match fetch(&req_url) {
                 Ok(r) => r,
                 Err(_) => {
                     toml::to_string(&StyleMain {
@@ -94,7 +94,7 @@ fn start() {
                     }).unwrap()
                 }
             };
-            dbg!(&t);
+            dbg!(&fetched);
 
             //cache termss files
             if req_url.ends_with("termss") {
@@ -102,7 +102,7 @@ fn start() {
             }
             files.insert(
                 req_url,
-                t
+                fetched
             );
 
         }
