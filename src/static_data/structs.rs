@@ -68,7 +68,7 @@ pub struct StyleMain {
     pub styles: Vec<StyleChild>,
 }
 
-#[derive(Default, Debug, Deserialize, Serialize)]
+#[derive(Default, Debug, Deserialize, Serialize, Clone)]
 pub struct StyleChild {
     pub class: String,
     pub background: Option<String>,

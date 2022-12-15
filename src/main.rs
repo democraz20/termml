@@ -1,6 +1,7 @@
 mod process_string;
 mod static_data;
 mod webrequest;
+mod renderer;
 
 use hard_xml::{XmlWrite, XmlRead};
 use ureq::{Response, Transport};
@@ -28,20 +29,13 @@ fn start() {
     let server_url = String::from("http://127.0.0.1:5500/");
     let url = format!("{}{}", server_url, "test.termml");
     let filename = get_filename(&url);
-    dbg!(&filename);
     let mut termss_vec: Vec<String> = vec![];
-    dbg!(&server_url);
-    dbg!(&url);
     let fetched = match fetch(&url) {
-        Ok(r) => {
-            println!("successful");
-            r
-        },
+        Ok(r) => r,
         Err(e) => {
             match e {
                 ureq::Error::Status(code, response) => {
                     //Termml to_string goes here
-                    eprintln!("status error code:{code}");
                     TermmlMain::fetch_error(
                         url.as_str(), Some(response.status_text()), Some(code)
                     )
@@ -49,7 +43,6 @@ fn start() {
                 },
                 ureq::Error::Transport(transport) => {
                     //Termml to_string goes here
-                    eprintln!("transport error");
                     transport.to_string();
                     TermmlMain::fetch_error(
                         url.as_str(), Some(transport.kind().to_string()), None
@@ -66,7 +59,6 @@ fn start() {
         Ok(r) => r,
         Err(e) => TermmlMain::parse_error(binding.as_str(), e)
     };
-    dbg!(&parsed);
 
     //cache main toml file
     files.insert(
@@ -94,7 +86,6 @@ fn start() {
                     }).unwrap()
                 }
             };
-            dbg!(&fetched);
 
             //cache termss files
             if req_url.ends_with("termss") {
@@ -108,8 +99,6 @@ fn start() {
         }
         // println!("{}", i);
     }
-    dbg!(&files);
-    dbg!(&termss_vec);
     _alloced("End of main");
     // dbg!(styles_hash());
 }
