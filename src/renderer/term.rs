@@ -8,8 +8,33 @@ impl DebugRenderer {
     pub fn debug(&self, markup: TermmlMain, 
     stylesmap: HashMap<String, StyleChild>) {
         println!("=====[start debug renderer]=====");
-        let divs = markup.body.value;
-        for i in divs {
+        let body_divs = markup.body.value;
+        let head_divs = markup.head.value;
+        println!("[INFO] Head tag");
+        match head_divs.class {
+            Some(class) => {
+                let k: String = class.into();
+                let c = stylesmap.get(&k);
+                let style = c.cloned();
+                drop(c);
+                match style {
+                    Some(style) => {
+                        Self::print_style(
+                            head_divs.value.to_string(),
+                            style
+                        )
+                    }
+                    None => {
+                        Self::print_plain(head_divs.value)
+                    }
+                }
+            },
+            None => {
+                Self::print_plain(head_divs.value)
+            }
+        }
+        println!("[INFO] body tag");
+        for i in body_divs {
             match i.class {
                 Some(class) => {
                     let k: String = class.into();
@@ -21,20 +46,20 @@ impl DebugRenderer {
                             Self::print_style(i.value.to_string(), style)
                         },
                         None => {
-                            Self::print_plain(i.value.to_string())
+                            Self::print_plain(i.value)
                         }
                     }
                 },
                 None => {
                     // println!("{}", i.value)
-                    Self::print_plain(i.value.to_string())
+                    Self::print_plain(i.value)
                 }
             }
         }
         println!("======[end debug renderer]======");
     }
 
-    fn print_plain(text: String) {
+    fn print_plain<T: std::fmt::Display>(text: T) {
         println!("{}", text)
     }
 
