@@ -1,5 +1,5 @@
 use hard_xml::{XmlRead, XmlWrite};
-use serde_derive::Deserialize;
+use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 //main markup
 
@@ -58,23 +58,27 @@ pub struct Require<'a> {
 #[xml(tag = "Stylesheet")]
 pub struct StyleSheet<'a> {
     #[xml(attr = "name")]
-    pub name: Option<Cow<'a, str>>,
+    pub name: Cow<'a, str>,
 }
 
 //to be done with YAML or XML
 //styles
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StyleMain {
     pub styles: Vec<StyleChild>,
 }
 
-#[derive(Default, Debug, Deserialize)]
+#[derive(Default, Debug, Deserialize, Serialize, Clone)]
 pub struct StyleChild {
     pub class: String,
     pub background: Option<String>,
     pub foreground: Option<String>,
     pub underline: Option<bool>,
     pub bold: Option<bool>,
-    pub wrap: Option<u16>,
-    pub margin: Option<u8>,
+}
+
+
+pub struct ReqPair {
+    pub name: String,
+    pub value: String
 }

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs, hash};
 
-use crate::static_data::structs::{Require, StyleChild, StyleMain, StyleSheet, TermmlMain};
+use crate::static_data::structs::{Require, StyleChild, StyleMain, StyleSheet, TermmlMain, ReqPair};
 use ansi_term::Style;
 use hard_xml::XmlRead;
 
@@ -20,35 +20,28 @@ pub fn markup_entry(text: String) -> () {
             //needs error value for this
             Require {
                 stylesheet: vec![StyleSheet {
-                    name: Some("styles.termss".into()),
+                    // name: Some("styles.termss".into()),
+                    name: "styles.termss".into()
                 }],
             }
         }
     };
     let requiredvec = required.stylesheet;
-    let hashmap = styles_hash(requiredvec);
-    dbg!(hashmap);
+    // let hashmap = styles_hash(requiredvec);
+    // dbg!(hashmap);
 }
 
-pub fn styles_hash(required: Vec<StyleSheet>) -> HashMap<String, StyleChild> {
+pub fn styles_hash(required: Vec<ReqPair>)
+    -> HashMap<String, StyleChild> {
     //imagine a getter from Require termml page
     let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
 
     for stylesheet in required {
-        let i: String = stylesheet.name.unwrap().into();
-        let file = fs::read_to_string(i.as_str()).unwrap();
 
-        let s = i.split(".");
-        let mut t = s.clone().map(String::from).collect::<Vec<String>>();
-        t.pop();
-        let styles_namespace = t.join("."); //splitted ".", rejoin "."
-        drop(s);
-        drop(t);
-
-        let styles = parse_style_sheet(file);
+        let styles = parse_style_sheet(stylesheet.value);
         for i in styles.styles {
             stylesmap.insert(
-                format!("{}::{}", styles_namespace, i.class.clone()),
+                format!("{}::{}", stylesheet.name, i.class.clone()),
                 i,
             );
         }
@@ -72,8 +65,6 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
                     foreground: None,
                     underline: None,
                     bold: None,
-                    wrap: None,
-                    margin: None,
                 }],
             }
         }

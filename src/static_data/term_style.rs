@@ -5,7 +5,7 @@ use ansi_term::{Colour, Style};
 #[allow(unused)]
 const DEFAULT_ML_COLOR: Colour = Colour::White;
 
-pub fn get_color_from_string(text: &str) -> Colour {
+pub fn get_color_from_string(text: String) -> Colour {
     let text: &str = &text.to_lowercase();
     let text: &str = &text.replace(" ", "");
     let text: &str = &text.replace("\n", "");
