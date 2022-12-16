@@ -4,8 +4,9 @@ mod webrequest;
 mod renderer;
 
 use hard_xml::{XmlWrite, XmlRead};
+use process_string::bond;
+use static_data::structs::ReqPair;
 use ureq::{Response, Transport};
-use std::sync::mpsc::TryRecvError;
 use std::{alloc, collections::HashMap, fs};
 
 //tracking memory usage
@@ -13,6 +14,7 @@ use cap::Cap;
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
+use crate::renderer::term::DebugRenderer;
 use crate::static_data::structs::{
     TermmlMain,
     StyleMain,
@@ -55,7 +57,7 @@ fn start() {
     let binding = fetched.clone();
     let res = TermmlMain::from_str(binding.as_str());
     let binding = url.clone();
-    let parsed = match res {
+    let parsedml = match res {
         Ok(r) => r,
         Err(e) => TermmlMain::parse_error(binding.as_str(), e)
     };
@@ -65,7 +67,8 @@ fn start() {
         url.clone(),
         fetched
     );
-    for i in parsed.require {
+    let mut read_style: Vec<ReqPair> = vec![];
+    for i in parsedml.require.clone() {
         // dbg!(i.stylesheet);
         let stlyesheet = i.stylesheet;
         for styleiter in stlyesheet {
@@ -81,12 +84,14 @@ fn start() {
                             foreground: None,
                             underline: None,
                             bold: None,
-                            wrap: None,
                         }],
                     }).unwrap()
                 }
             };
-
+            read_style.push(ReqPair {
+                name: styleiter.name.to_string(),
+                value: fetched.clone()
+            });
             //cache termss files
             if req_url.ends_with("termss") {
                 termss_vec.push(req_url.clone());
@@ -95,10 +100,13 @@ fn start() {
                 req_url,
                 fetched
             );
-
         }
         // println!("{}", i);
     }
+    let hash = bond::styles_hash(read_style);
+    dbg!(&hash);
+    let debug_renderer = DebugRenderer;
+    debug_renderer.debug(parsedml, hash);
     _alloced("End of main");
     // dbg!(styles_hash());
 }
