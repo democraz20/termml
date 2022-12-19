@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, hash};
+use std::{collections::HashMap, fs, hash, string};
 
 use crate::static_data::structs::{Require, StyleChild, StyleMain, StyleSheet, TermmlMain, ReqPair};
 use ansi_term::Style;
@@ -69,4 +69,22 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
             }
         }
     }
+}
+pub fn remove_tabs(div: String) -> String {
+    let trim_start = div.trim_start_matches(|c| c == '\r');
+    let trim_start = trim_start.trim_start_matches(|c| c == '\n');
+    let mut check_end: String = trim_start
+        .replace("    ", "")
+        .to_string()
+        .clone();
+    if check_end.ends_with('\n') {
+        let len1 = check_end.len();
+        let (s1, _) = check_end.split_at_mut(len1-1);
+        if s1.ends_with('\r') {
+            let len2 = s1.len();
+            let (s2, _) = s1.split_at_mut(len2-1);
+            return s2.to_string()
+        }
+    }
+    return trim_start.to_string()
 }

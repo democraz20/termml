@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::static_data::{structs::{TermmlMain, StyleChild}, term_style::get_color_from_string};
+use crate::{static_data::{structs::{TermmlMain, StyleChild}, term_style::get_color_from_string}, process_string::bond::remove_tabs};
 
 pub struct DebugRenderer;
 
@@ -34,7 +34,8 @@ impl DebugRenderer {
             }
         }
         println!("[INFO] body tag");
-        for i in body_divs {
+        for mut i in body_divs {
+            i.value = remove_tabs(i.value.clone().to_string()).into();
             match i.class {
                 Some(class) => {
                     let k: String = class.into();
