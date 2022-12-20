@@ -1,13 +1,13 @@
 mod process_string;
+mod renderer;
 mod static_data;
 mod webrequest;
-mod renderer;
 
-use hard_xml::{XmlWrite, XmlRead};
+use hard_xml::{XmlRead, XmlWrite};
 use process_string::bond;
 use static_data::structs::ReqPair;
-use ureq::{Response, Transport};
 use std::{alloc, collections::HashMap, fs};
+use ureq::{Response, Transport};
 
 //tracking memory usage
 use cap::Cap;
@@ -15,11 +15,7 @@ use cap::Cap;
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
 use crate::renderer::term::DebugRenderer;
-use crate::static_data::structs::{
-    TermmlMain,
-    StyleMain,
-    StyleChild
-};
+use crate::static_data::structs::{StyleChild, StyleMain, TermmlMain};
 use crate::webrequest::request::{fetch, get_filename};
 fn main() {
     start();
@@ -38,18 +34,16 @@ fn start() {
             match e {
                 ureq::Error::Status(code, response) => {
                     //Termml to_string goes here
-                    TermmlMain::fetch_error(
-                        url.as_str(), Some(response.status_text()), Some(code)
-                    )
-                    .to_string().unwrap()
-                },
+                    TermmlMain::fetch_error(url.as_str(), Some(response.status_text()), Some(code))
+                        .to_string()
+                        .unwrap()
+                }
                 ureq::Error::Transport(transport) => {
                     //Termml to_string goes here
                     transport.to_string();
-                    TermmlMain::fetch_error(
-                        url.as_str(), Some(transport.kind().to_string()), None
-                    )
-                    .to_string().unwrap()
+                    TermmlMain::fetch_error(url.as_str(), Some(transport.kind().to_string()), None)
+                        .to_string()
+                        .unwrap()
                 }
             }
         }
@@ -59,14 +53,11 @@ fn start() {
     let binding = url.clone();
     let parsedml = match res {
         Ok(r) => r,
-        Err(e) => TermmlMain::parse_error(binding.as_str(), e)
+        Err(e) => TermmlMain::parse_error(binding.as_str(), e),
     };
 
     //cache main toml file
-    files.insert(
-        url.clone(),
-        fetched
-    );
+    files.insert(url.clone(), fetched);
     let mut read_style: Vec<ReqPair> = vec![];
     for i in parsedml.require.clone() {
         // dbg!(i.stylesheet);
@@ -76,30 +67,26 @@ fn start() {
             let req_url = format!("{}{}", server_url, styleiter.name);
             let fetched = match fetch(&req_url) {
                 Ok(r) => r,
-                Err(_) => {
-                    toml::to_string(&StyleMain {
-                        styles: vec![StyleChild {
-                            class: String::from("null"),
-                            background: None,
-                            foreground: None,
-                            underline: None,
-                            bold: None,
-                        }],
-                    }).unwrap()
-                }
+                Err(_) => toml::to_string(&StyleMain {
+                    styles: vec![StyleChild {
+                        class: String::from("null"),
+                        background: None,
+                        foreground: None,
+                        underline: None,
+                        bold: None,
+                    }],
+                })
+                .unwrap(),
             };
             read_style.push(ReqPair {
                 name: styleiter.name.to_string(),
-                value: fetched.clone()
+                value: fetched.clone(),
             });
             //cache termss files
             if req_url.ends_with("termss") {
                 termss_vec.push(req_url.clone());
             }
-            files.insert(
-                req_url,
-                fetched
-            );
+            files.insert(req_url, fetched);
         }
         // println!("{}", i);
     }

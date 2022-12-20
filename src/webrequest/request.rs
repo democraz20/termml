@@ -3,31 +3,24 @@ use ureq::Response;
 use crate::static_data::structs::TermmlMain;
 use hard_xml::XmlWrite;
 
-pub fn fetch(url: &String) -> 
-    // Result<String, ureq::Error>
-    Result<String, ureq::Error>
-{
+pub fn fetch(url: &String) -> Result<String, ureq::Error> {
     for i in 0..3 {
-        println!("retrying attempt : {}", i+1);
+        println!("retrying attempt : {}", i + 1);
         match ureq::get(url.as_str()).call() {
-            Ok(r) => {
-                match r.into_string() {
-                    Ok(r) => {
-                        return Ok(r)
-                    },
-                    Err(_) => {}
-                }
+            Ok(r) => match r.into_string() {
+                Ok(r) => return Ok(r),
+                Err(_) => {}
             },
             Err(ureq::Error::Status(code, response)) => {
                 if i == 2 {
-                    return Err(ureq::Error::Status(code, response))
+                    return Err(ureq::Error::Status(code, response));
                 }
-            },
+            }
             Err(ureq::Error::Transport(transport)) => {
                 if i == 2 {
-                    return Err(ureq::Error::Transport(transport))
+                    return Err(ureq::Error::Transport(transport));
                 }
-            },
+            }
             // #[allow(unreachable_patterns)]
             // Err(_) => {
             //     if i == 2  {
@@ -45,10 +38,8 @@ pub fn fetch(url: &String) ->
     // Ok(())
 }
 
-
 pub fn get_filename(url: &String) -> String {
-    let mut vec 
-    = url.split("/").map(String::from).collect::<Vec<_>>();
+    let mut vec = url.split("/").map(String::from).collect::<Vec<_>>();
     if vec.len() <= 3 {
         return String::new();
     }

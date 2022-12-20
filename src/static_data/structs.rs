@@ -77,8 +77,7 @@ pub struct StyleChild {
     pub bold: Option<bool>,
 }
 
-
 pub struct ReqPair {
     pub name: String,
-    pub value: String
+    pub value: String,
 }
