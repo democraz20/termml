@@ -14,7 +14,7 @@ use cap::Cap;
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
-use crate::renderer::term::DebugRenderer;
+use crate::renderer::ren_debug::DebugRenderer;
 use crate::static_data::structs::{StyleChild, StyleMain, TermmlMain};
 use crate::webrequest::request::{fetch, get_filename};
 fn main() {

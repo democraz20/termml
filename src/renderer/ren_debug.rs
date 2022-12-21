@@ -1,5 +1,8 @@
 use std::collections::HashMap;
 
+use ansi_term::Style;
+use crossterm::execute;
+
 use crate::{
     process_string::bond::remove_tabs,
     static_data::{
@@ -7,7 +10,7 @@ use crate::{
         term_style::get_color_from_string,
     },
 };
-
+use std::io::stdout;
 pub struct DebugRenderer;
 
 impl DebugRenderer {
