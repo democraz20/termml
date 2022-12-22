@@ -294,6 +294,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "renderer"
+version = "0.1.0"
+dependencies = [
+ "ansi_term",
+ "crossterm",
+ "web_parser",
+]
+
+[[package]]
 name = "ring"
 version = "0.16.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -415,11 +424,13 @@ dependencies = [
  "crossterm",
  "figlet-rs",
  "hard-xml",
+ "renderer",
  "serde",
  "serde_derive",
  "smallvec",
  "toml",
  "ureq",
+ "web_parser",
 ]
 
 [[package]]
@@ -569,6 +580,22 @@ checksum = "bcda906d8be16e728fd5adc5b729afad4e444e106ab28cd1c7256e54fa61510f"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "web_parser"
+version = "0.1.0"
+dependencies = [
+ "ansi_term",
+ "cap",
+ "crossterm",
+ "figlet-rs",
+ "hard-xml",
+ "serde",
+ "serde_derive",
+ "smallvec",
+ "toml",
+ "ureq",
 ]
 
 [[package]]

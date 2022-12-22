@@ -1,22 +1,26 @@
-mod process_string;
-mod renderer;
-mod static_data;
-mod webrequest;
+use web_parser::{
+    process_string::bond,
+    process_string::bond::{
+        markup_entry, parse_style_sheet, styles_hash
+    },
+    static_data::structs::{
+        ReqPair, StyleChild, StyleMain, TermmlMain
+    },
+    webrequest::request::{fetch, get_filename}
+};
+
+use renderer::{
+    debug::ren_debug::DebugRenderer
+};
 
 use hard_xml::{XmlRead, XmlWrite};
-use process_string::bond;
-use static_data::structs::ReqPair;
-use std::{alloc, collections::HashMap, fs};
+use std::{alloc, collections::HashMap};
 use ureq::{Response, Transport};
 
 //tracking memory usage
 use cap::Cap;
 #[global_allocator]
 static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
-use crate::process_string::bond::{markup_entry, parse_style_sheet, styles_hash};
-use crate::renderer::ren_debug::DebugRenderer;
-use crate::static_data::structs::{StyleChild, StyleMain, TermmlMain};
-use crate::webrequest::request::{fetch, get_filename};
 fn main() {
     start();
 }
@@ -92,6 +96,7 @@ fn start() {
     }
     let hash = bond::styles_hash(read_style);
     dbg!(&hash);
+    
     let debug_renderer = DebugRenderer;
     debug_renderer.debug(parsedml, hash);
     _alloced("End of main");

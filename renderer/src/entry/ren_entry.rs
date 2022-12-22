@@ -1,5 +1,5 @@
 use ansi_term::Style;
-use crossterm::{event::{Event}, event::{self, KeyEvent, KeyCode}, execute, Result, terminal::{EnterAlternateScreen, self, LeaveAlternateScreen}};
+use crossterm::{event::Event, event::{self, KeyEvent, KeyCode}, execute, Result, terminal::{EnterAlternateScreen, self, LeaveAlternateScreen}};
 
 use std::{io::stdout, time::Duration};
 pub struct MainNavigator;
