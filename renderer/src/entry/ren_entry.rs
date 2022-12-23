@@ -4,38 +4,38 @@ use crossterm::{event::Event, event::{self, KeyEvent, KeyCode}, execute, Result,
 use std::{io::stdout, time::Duration};
 pub struct MainNavigator;
 
+struct CleanUp;
+impl Drop for CleanUp {
+    fn drop(&mut self) {
+        terminal::disable_raw_mode().unwrap();
+        execute!(stdout(), LeaveAlternateScreen).unwrap();
+    }
+}
+
 impl MainNavigator {
     pub fn entry(&self, vec: Vec<(String, Style)>) -> Result<()>{
+        let _cleanup = CleanUp;
         execute!(stdout(), EnterAlternateScreen)?;
         terminal::enable_raw_mode()?;
         loop {
-            Self::event_poll()?;
-        }
-        // for i in vec {
-        //     //temp
-        //     println!("{}", i.0);
-        // }
-    }
-    fn event_poll() -> Result<()> {
-        if event::poll(Duration::from_millis(1000))? {
-            if let Event::Key(event) = event::read()? {
-                Self::match_key_event(event)?;
+            if event::poll(Duration::from_millis(1000))? {
+                if let Event::Key(event) = event::read()? {
+                    match event {
+                        KeyEvent {
+                            code: KeyCode::Char('c'),
+                            modifiers: event::KeyModifiers::CONTROL, ..
+                        } => {
+                            println!("CTRL-C pressed, doing cleanup");
+                            execute!(stdout(), LeaveAlternateScreen)?;
+                            terminal::disable_raw_mode()?;
+                            break;
+                        }
+                        _ => {}
+                    }
+                }
             }
         }
-        Ok(())
-    }
-    fn match_key_event(event: KeyEvent) -> Result<()> {
-        match event {
-            KeyEvent {
-                code: KeyCode::Char('c'),
-                modifiers: event::KeyModifiers::CONTROL, ..
-            } => {
-                println!("CTRL-C pressed, doing cleanup");
-                execute!(stdout(), LeaveAlternateScreen)?;
-                terminal::disable_raw_mode()?;
-            }
-            _ => {}
-        }
+        println!("Running cleanup code");
         Ok(())
     }
 }
