@@ -1,8 +1,3 @@
-use ureq::Response;
-
-use crate::static_data::structs::TermmlMain;
-use hard_xml::XmlWrite;
-
 pub fn fetch(url: &String) -> Result<String, ureq::Error> {
     for i in 0..3 {
         println!("retrying attempt : {}", i + 1);

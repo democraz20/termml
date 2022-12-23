@@ -1,17 +1,11 @@
 use web_parser::{
     process_string::bond,
-    process_string::bond::{
-        markup_entry, parse_style_sheet, styles_hash
-    },
-    static_data::structs::{
-        ReqPair, StyleChild, StyleMain, TermmlMain
-    },
-    webrequest::request::{fetch, get_filename}
+    process_string::bond::{markup_entry, parse_style_sheet, styles_hash},
+    static_data::structs::{ReqPair, StyleChild, StyleMain, TermmlMain},
+    webrequest::request::{fetch, get_filename},
 };
 
-use renderer::{
-    debug::ren_debug::DebugRenderer
-};
+use renderer::debug::ren_debug::DebugRenderer;
 
 use hard_xml::{XmlRead, XmlWrite};
 use std::{alloc, collections::HashMap};
@@ -96,7 +90,7 @@ fn start() {
     }
     let hash = bond::styles_hash(read_style);
     dbg!(&hash);
-    
+
     let debug_renderer = DebugRenderer;
     debug_renderer.debug(parsedml, hash);
     _alloced("End of main");

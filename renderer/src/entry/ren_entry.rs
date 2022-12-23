@@ -15,7 +15,6 @@ impl MainNavigator {
         //     //temp
         //     println!("{}", i.0);
         // }
-        Ok(())
     }
     fn event_poll() -> Result<()> {
         if event::poll(Duration::from_millis(1000))? {

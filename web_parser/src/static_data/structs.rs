@@ -3,7 +3,6 @@ use serde_derive::{Deserialize, Serialize};
 use std::borrow::Cow;
 //main markup
 
-#[allow(unused_must_use)]
 #[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "main")]
 pub struct TermmlMain<'a> {
@@ -25,6 +24,7 @@ pub struct Doctype<'a> {
     pub ml: Cow<'a, str>,
 }
 
+#[allow(unused_must_use)]
 #[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "head")]
 pub struct Head<'a> {
