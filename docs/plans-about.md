@@ -11,8 +11,8 @@ Currently, the plan for the project is an alternative the traditional web browse
 * [hosting/server](#hostingserver)
 
 
-### Termml renderer
-
+### Termml renderer 
+15seperated crate being worked on
 ### Navigator
 
 ### protocol 
