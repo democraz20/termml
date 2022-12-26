@@ -12,7 +12,8 @@ Currently, the plan for the project is an alternative the traditional web browse
 
 
 ### Termml renderer 
-15seperated crate being worked on
+seperated crate being worked on, possible with cargo work spaces
+
 ### Navigator
 
 ### protocol 
