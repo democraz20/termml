@@ -12,13 +12,15 @@ Currently, the plan for the project is an alternative the traditional web browse
 
 
 ### Termml renderer 
-seperated crate being worked on, possible with cargo work spaces
+seperated crate being worked on, possible with cargo workspaces
 
 ### Navigator
 
 ### protocol 
+standard http or any protocol that could transfer small files 
 
 ### hosting/server
+same as above
 
 ### TermMarkUp
 
