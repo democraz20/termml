@@ -26,8 +26,15 @@ impl MainNavigator {
                             modifiers: event::KeyModifiers::CONTROL, ..
                         } => {
                             println!("CTRL-C pressed, doing cleanup");
-                            execute!(stdout(), LeaveAlternateScreen)?;
-                            terminal::disable_raw_mode()?;
+                            Self::cleanup()?;
+                            break;
+                        },
+                        KeyEvent {
+                            code: KeyCode::Esc,
+                            modifiers: event::KeyModifiers::NONE, ..
+                        } => {
+                            println!("ESC pressed, doing cleanup");
+                            Self::cleanup()?;
                             break;
                         }
                         _ => {}
@@ -36,6 +43,11 @@ impl MainNavigator {
             }
         }
         println!("Running cleanup code");
+        Ok(())
+    }
+    fn cleanup() -> Result<()>{
+        execute!(stdout(), LeaveAlternateScreen)?;
+        terminal::disable_raw_mode()?;
         Ok(())
     }
 }
