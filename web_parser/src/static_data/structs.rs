@@ -73,8 +73,10 @@ pub struct StyleChild {
     pub class: String,
     pub background: Option<String>,
     pub foreground: Option<String>,
+    //Option<bool> because parser option
     pub underline: Option<bool>,
     pub bold: Option<bool>,
+    pub header: Option<bool>,
 }
 
 pub struct ReqPair {

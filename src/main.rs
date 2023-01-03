@@ -1,14 +1,17 @@
+use ansi_term::Style;
+use crossterm::style;
+use serde::__private::de::FlatInternallyTaggedAccess;
 use web_parser::{
     process_string::bond,
-    process_string::bond::{markup_entry, parse_style_sheet, styles_hash},
+    process_string::bond::{markup_entry, parse_style_sheet, styles_hash, remove_tabs},
     static_data::structs::{ReqPair, StyleChild, StyleMain, TermmlMain},
     webrequest::request::{fetch, get_filename},
 };
 
-use renderer::debug::ren_debug::DebugRenderer;
+use renderer::{debug::ren_debug::DebugRenderer, entry::ren_entry::MainNavigator};
 
 use hard_xml::{XmlRead, XmlWrite};
-use std::{alloc, collections::HashMap};
+use std::{alloc, collections::HashMap, process::Child};
 use ureq::{Response, Transport};
 
 //tracking memory usage
@@ -18,7 +21,6 @@ static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value(
 fn main() {
     start();
 }
-
 
 fn start() {
     //caching
@@ -73,6 +75,7 @@ fn start() {
                         foreground: None,
                         underline: None,
                         bold: None,
+                        header: None
                     }],
                 })
                 .unwrap(),
@@ -92,10 +95,104 @@ fn start() {
     let hash = bond::styles_hash(read_style);
     dbg!(&hash);
 
-    let debug_renderer = DebugRenderer;
-    debug_renderer.debug(parsedml, hash);
+    // let debug_renderer = DebugRenderer;
+    // debug_renderer.debug(parsedml, hash);
+    let renderer = MainNavigator;
+    let termml_vec = construct_termml_vec(parsedml, hash);
+    dbg!(termml_vec);
+    // renderer.entry(vec);
     _alloced("End of main");
     // dbg!(styles_hash());
+}
+
+//TEMP
+fn construct_termml_vec(
+    markup: TermmlMain, stylesmap: HashMap<String, StyleChild>
+    ) -> Vec<(String, StyleChild)>{
+    let mut vec: Vec<(String, StyleChild)> = vec![];
+    let head_divs = markup.head.value;
+    let body_divs = markup.body.value;
+    match head_divs.class {
+        Some(class) => {
+            let k: String = class.into();
+            let c = stylesmap.get(&k);
+            let style = c.cloned();
+            drop(c);
+            match style {
+                Some(child) => {
+                    println!("pushing vec");
+                    vec.push((head_divs.value.into(), child));
+                },
+                None => {
+                    println!("no pushing vec");
+                    vec.push((head_divs.value.into(), 
+                        StyleChild {
+                            class: String::from("null"),
+                            background: None,
+                            foreground: None,
+                            underline: None,
+                            bold: None,
+                            header: Some(true)
+                        }
+                    ));
+                }
+            }
+        },
+        None => {
+            vec.push((head_divs.value.into(),
+                StyleChild {
+                    class: String::from("null"),
+                    background: None,
+                    foreground: None,
+                    underline: None,
+                    bold: None,
+                    header: Some(true)
+                }
+            ))
+        }
+    }
+    for mut i in body_divs {
+        println!("in loop");
+        i.value = remove_tabs(i.value.clone().to_string()).into();
+        match i.class {
+            Some(class) => {
+                let k: String = class.into();
+                let c = stylesmap.get(&k);
+                let style = c.cloned();
+                drop(c);
+                match style {
+                    Some(child) => {
+                        vec.push((i.value.into(), child));
+                    },
+                    None => {
+                        vec.push((i.value.into(), 
+                            StyleChild {
+                                class: String::from("null"),
+                                background: None,
+                                foreground: None,
+                                underline: None,
+                                bold: None,
+                                header: Some(false)
+                            }
+                        ));
+                    }
+                }
+            },
+            None => {
+                vec.push((i.value.into(),
+                StyleChild {
+                    class: String::from("null"),
+                    background: None,
+                    foreground: None,
+                    underline: None,
+                    bold: None,
+                    header: Some(false)
+                }
+            ))
+            }
+        }
+    }
+    return vec;
 }
 
 fn _alloced<T: std::fmt::Display>(header: T) -> () {
