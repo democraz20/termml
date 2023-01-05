@@ -13,6 +13,9 @@ Currently, the plan for the project is an alternative the traditional web browse
 
 ### Termml renderer 
 seperated crate being worked on, possible with cargo workspaces
+this would be modular, other people would be able to develop
+their own renderer or browser environment that would be using 
+termml's parser 
 
 ### Navigator
 
