@@ -18,9 +18,11 @@ their own renderer or browser environment that would be using
 termml's parser 
 
 ### Navigator
+basically the same as the ["renderer"](#termml-renderer) section 
 
 ### protocol 
 standard http or any protocol that could transfer small files 
+this could be modified with the uses of custom ["renderer"](#termml-renderer) or [navigator/browser](#navigator)
 
 ### hosting/server
 same as above
