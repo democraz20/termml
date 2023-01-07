@@ -13,5 +13,6 @@
             <!--needs to fix tabs-->
         </div>
         <div>and this too</div>
+        <div class="styles.termss::TEST2">this line has styles</div>
     </body>
 </main>
