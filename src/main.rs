@@ -23,6 +23,19 @@ fn main() {
 }
 
 fn start() {
+    let splitted = "123451234512345".chars()
+        .enumerate()
+        .flat_map(|(i, c)| {
+            if i != 0 && i % 5 == 0 {
+                Some(' ')
+            } else {
+                None
+            }
+            .into_iter()
+            .chain(std::iter::once(c))
+        })
+        .collect::<String>();
+    println!("{:?}", splitted);
     //caching
     let mut files: HashMap<String, String> = HashMap::new();
     let server_url = String::from("http://127.0.0.1:5500/");
