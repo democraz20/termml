@@ -23,19 +23,6 @@ fn main() {
 }
 
 fn start() {
-    let splitted = "123451234512345".chars()
-        .enumerate()
-        .flat_map(|(i, c)| {
-            if i != 0 && i % 5 == 0 {
-                Some(' ')
-            } else {
-                None
-            }
-            .into_iter()
-            .chain(std::iter::once(c))
-        })
-        .collect::<String>();
-    println!("{:?}", splitted);
     //caching
     let mut files: HashMap<String, String> = HashMap::new();
     let server_url = String::from("http://127.0.0.1:5500/");
@@ -65,7 +52,7 @@ fn start() {
     let binding = fetched.clone();
     let res = TermmlMain::from_str(binding.as_str());
     let binding = url.clone();
-    let parsedml = match res {
+    let mut parsedml = match res {
         Ok(r) => r,
         Err(e) => TermmlMain::parse_error(binding.as_str(), e),
     };
@@ -108,11 +95,12 @@ fn start() {
     let hash = bond::styles_hash(read_style);
     dbg!(&hash);
 
-    // let debug_renderer = DebugRenderer;
-    // debug_renderer.debug(parsedml, hash);
-    let renderer = MainNavigator;
-    let termml_vec = construct_termml_vec(parsedml, hash);
-    dbg!(termml_vec);
+    let resized = renderer::entry::ren_entry::MainNavigator::resize_markup(&mut parsedml, 10);
+    dbg!(&resized);
+    // let termml_vec = construct_termml_vec(parsedml.clone(), hash.clone());
+    // dbg!(termml_vec);
+    let renderer = renderer::debug::ren_debug::DebugRenderer;
+    renderer.debug(resized, hash);
     // renderer.entry(vec);
     _alloced("End of main");
     // dbg!(styles_hash());
