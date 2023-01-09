@@ -47,41 +47,37 @@ impl MainNavigator {
 		println!("Running cleanup code");
 		Ok(())
 	}
-	pub fn resize_markup<'a>(original: &'a mut TermmlMain, width: u16) -> TermmlMain<'a>{
-		let divs = &mut original.body.value;
-		dbg!(&divs);
-		for (idx, d) in divs.clone().iter_mut().enumerate() {
+	pub fn resize_markup<'a>(original: &'a mut Vec<Div>, width: u16) -> TermmlMain<'a>{
+		for (idx, d) in original.clone().iter_mut().enumerate() {
 			let text = &d.value;
 			if text.len() > width.into() {
 				println!("text is longer");
-				let s = text.chars()
-					.enumerate()
-					.flat_map(|(i, c)| {
-						if i != 0 && i % width as usize == 0 {
-							Some('␡')
-						} else {
-							None
-						}
-						.into_iter()
-						.chain(std::iter::once(c))
-					})
-					.collect::<String>();
-					//THIS IS FUCKING GARBAGE
-					//SEND HELP
-				let c = s.split("␡").map(String::from)
-					.collect::<Vec<String>>();
-				for i in c {
-					let insert_idx = idx;
-					divs.remove(idx);
-					divs.insert(insert_idx, Div {
-						class: d.class.clone(),
-						value: i.into()
-					});
-				}
+				let splitted = &Self::split_by_len(text.to_string(), width.into());
+				original.remove(idx);
+				original.splice(idx..idx, splitted);
 			}
 		}
 		dbg!(&divs);
 		return original.clone();
+	}
+	fn split_by_len(text: String, len: usize) -> Vec<String>{
+		let s = text.chars()
+			.enumerate()
+			.flat_map(|(i, c)| {
+				if i != 0 && i % len as usize == 0 {
+					Some('␡')
+				} else {
+					None
+				}
+				.into_iter()
+				.chain(std::iter::once(c))
+			})
+			.collect::<String>();
+			//THIS IS FUCKING GARBAGE
+			//SEND HELP
+		let c = s.split("␡").map(String::from)
+			.collect::<Vec<String>>();
+		return c;
 	}
 	fn cleanup() -> Result<()>{
 		execute!(stdout(), LeaveAlternateScreen)?;
