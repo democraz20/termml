@@ -47,18 +47,25 @@ impl MainNavigator {
 		println!("Running cleanup code");
 		Ok(())
 	}
-	pub fn resize_markup<'a>(original: &'a mut Vec<Div>, width: u16) -> TermmlMain<'a>{
-		for (idx, d) in original.clone().iter_mut().enumerate() {
-			let text = &d.value;
+	pub fn resize_markup<'a>(original: &'a Vec<Div>, width: u16) -> Vec<Div<'a>>{
+		let mut new_vec: Vec<Div> = vec![];
+		for (_, d) in original.clone().iter_mut().enumerate() {
+			let text = d.clone().value;
 			if text.len() > width.into() {
 				println!("text is longer");
-				let splitted = &Self::split_by_len(text.to_string(), width.into());
-				original.remove(idx);
-				original.splice(idx..idx, splitted);
+				let splitted = Self::split_by_len(text.to_string(), width.into());
+				for i in splitted {
+					new_vec.push(Div {
+						class: d.class.clone(),
+						value: i.into()
+					});
+				}
+			} else {
+				new_vec.push(d.clone());
 			}
 		}
-		dbg!(&divs);
-		return original.clone();
+		dbg!(&new_vec);
+		return new_vec;
 	}
 	fn split_by_len(text: String, len: usize) -> Vec<String>{
 		let s = text.chars()

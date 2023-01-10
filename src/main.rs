@@ -95,12 +95,17 @@ fn start() {
     let hash = bond::styles_hash(read_style);
     dbg!(&hash);
 
-    let resized = renderer::entry::ren_entry::MainNavigator::resize_markup(&mut parsedml, 10);
-    dbg!(&resized);
+    let binding = parsedml.body.value.clone();
+    parsedml.body.value = 
+    renderer::entry::ren_entry::MainNavigator::resize_markup(
+        &binding, 10
+    );
+    // dbg!(&resized);
     // let termml_vec = construct_termml_vec(parsedml.clone(), hash.clone());
     // dbg!(termml_vec);
     let renderer = renderer::debug::ren_debug::DebugRenderer;
-    renderer.debug(resized, hash);
+
+    renderer.debug(parsedml, hash);
     // renderer.entry(vec);
     _alloced("End of main");
     // dbg!(styles_hash());
