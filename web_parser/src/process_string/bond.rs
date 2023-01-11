@@ -1,9 +1,8 @@
-use std::{collections::HashMap, fs, hash, string};
+use std::{collections::HashMap};
 
 use crate::static_data::structs::{
     ReqPair, Require, StyleChild, StyleMain, StyleSheet, TermmlMain,
 };
-use ansi_term::Style;
 use hard_xml::XmlRead;
 
 pub fn markup_entry(text: String) -> () {
@@ -16,7 +15,7 @@ pub fn markup_entry(text: String) -> () {
     };
     dbg!(&markup);
     let required_entry = markup.require;
-    let required = match required_entry {
+    let _required = match required_entry {
         Some(s) => s,
         None => {
             //needs error value for this
@@ -28,7 +27,6 @@ pub fn markup_entry(text: String) -> () {
             }
         }
     };
-    let requiredvec = required.stylesheet;
     // let hashmap = styles_hash(requiredvec);
     // dbg!(hashmap);
 }

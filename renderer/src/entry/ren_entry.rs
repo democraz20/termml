@@ -1,8 +1,7 @@
-use ansi_term::Style;
 use crossterm::{event::Event, event::{self, KeyEvent, KeyCode}, execute, Result, terminal::{EnterAlternateScreen, self, LeaveAlternateScreen}};
 use web_parser::static_data::structs::{TermmlMain, StyleChild, Div};
 
-use std::{io::{stdout, Read, self}, time::Duration, collections::HashMap, fs::read_dir};
+use std::{io::{stdout}, time::Duration, collections::HashMap};
 pub struct MainNavigator;
 
 struct CleanUp;
