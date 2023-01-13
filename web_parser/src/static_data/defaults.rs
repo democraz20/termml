@@ -1,6 +1,4 @@
-use crate::static_data::structs::{
-    Body, Div, Doctype, Head, TermmlMain,
-};
+use crate::static_data::structs::{Body, Div, Doctype, Head, TermmlMain};
 
 impl TermmlMain<'_> {
     pub fn parse_error<T: std::fmt::Display>(filename: &str, e: T) -> TermmlMain {

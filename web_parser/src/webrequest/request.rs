@@ -15,13 +15,12 @@ pub fn fetch(url: &String) -> Result<String, ureq::Error> {
                 if i == 2 {
                     return Err(ureq::Error::Transport(transport));
                 }
-            }
-            // #[allow(unreachable_patterns)]
-            // Err(_) => {
-            //     if i == 2  {
-            //         return Err("Unknown error occured")?;
-            //     }
-            // }
+            } // #[allow(unreachable_patterns)]
+              // Err(_) => {
+              //     if i == 2  {
+              //         return Err("Unknown error occured")?;
+              //     }
+              // }
         }
     }
     //retry once again, worst case scenario

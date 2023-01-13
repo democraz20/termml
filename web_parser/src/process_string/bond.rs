@@ -1,4 +1,4 @@
-use std::{collections::HashMap};
+use std::collections::HashMap;
 
 use crate::static_data::structs::{
     ReqPair, Require, StyleChild, StyleMain, StyleSheet, TermmlMain,
@@ -60,7 +60,7 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
                     foreground: None,
                     underline: None,
                     bold: None,
-                    header: None
+                    header: None,
                 }],
             }
         }

@@ -4,7 +4,6 @@ use web_parser::{
     webrequest::request::{fetch, get_filename},
 };
 
-
 use hard_xml::{XmlRead, XmlWrite};
 use std::{alloc, collections::HashMap};
 
@@ -69,7 +68,7 @@ fn start() {
                         foreground: None,
                         underline: None,
                         bold: None,
-                        header: None
+                        header: None,
                     }],
                 })
                 .unwrap(),
@@ -90,10 +89,7 @@ fn start() {
     dbg!(&hash);
 
     let binding = parsedml.body.value.clone();
-    parsedml.body.value = 
-    renderer::entry::ren_entry::MainNavigator::resize_markup(
-        &binding, 10
-    );
+    parsedml.body.value = renderer::entry::ren_entry::MainNavigator::resize_markup(&binding, 10);
     // dbg!(&resized);
     // let termml_vec = construct_termml_vec(parsedml.clone(), hash.clone());
     // dbg!(termml_vec);
@@ -125,7 +121,7 @@ fn start() {
 //                 },
 //                 None => {
 //                     println!("no pushing vec");
-//                     vec.push((head_divs.value.into(), 
+//                     vec.push((head_divs.value.into(),
 //                         StyleChild {
 //                             class: String::from("null"),
 //                             background: None,
@@ -165,7 +161,7 @@ fn start() {
 //                         vec.push((i.value.into(), child));
 //                     },
 //                     None => {
-//                         vec.push((i.value.into(), 
+//                         vec.push((i.value.into(),
 //                             StyleChild {
 //                                 class: String::from("null"),
 //                                 background: None,

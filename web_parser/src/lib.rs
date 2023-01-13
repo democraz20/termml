@@ -3,5 +3,4 @@ pub mod static_data;
 pub mod webrequest;
 
 #[cfg(test)]
-mod tests {
-}
+mod tests {}
