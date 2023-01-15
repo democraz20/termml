@@ -21,14 +21,11 @@ pub fn markup_entry(text: String) -> () {
             //needs error value for this
             Require {
                 stylesheet: vec![StyleSheet {
-                    // name: Some("styles.termss".into()),
                     name: "styles.termss".into(),
                 }],
             }
         }
     };
-    // let hashmap = styles_hash(requiredvec);
-    // dbg!(hashmap);
 }
 
 pub fn styles_hash(required: Vec<ReqPair>) -> HashMap<String, StyleChild> {

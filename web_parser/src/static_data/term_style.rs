@@ -1,7 +1,5 @@
 use ansi_term::{Colour, Style};
 
-// use crate::static_data::defaults::DEFAULT_ML_COLOR;
-
 #[allow(unused)]
 const DEFAULT_ML_COLOR: Colour = Colour::White;
 

@@ -42,7 +42,6 @@ impl DebugRenderer {
                     }
                 }
                 None => {
-                    // println!("{}", i.value)
                     Self::print_plain(i.value)
                 }
             }
@@ -80,7 +79,6 @@ impl DebugRenderer {
             }
             _ => {}
         }
-        // _ = s.paint(text);
         println!("{}", s.paint(text));
     }
 }
