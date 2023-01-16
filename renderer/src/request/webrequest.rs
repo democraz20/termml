@@ -25,16 +25,3 @@ pub fn fetch(url: &String) -> Result<String, ureq::Error> {
 
     Err(ureq::Error::Transport(error))
 }
-
-pub fn get_filename(url: &String) -> String {
-    let mut vec = url.split("/").map(String::from).collect::<Vec<_>>();
-    if vec.len() <= 3 {
-        return String::new();
-    }
-    if vec.len() >= 4 {
-        for _ in 0..3 {
-            vec.remove(0);
-        }
-    }
-    vec.join("/")
-}

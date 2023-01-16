@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 ansi_term = "0.12.1"
 crossterm = "0.25.0"
+ureq = "2.5.0"
 web_parser = { path = "../web_parser" }

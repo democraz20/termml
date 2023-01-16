@@ -4,6 +4,10 @@ use ansi_term::{Colour, Style};
 const DEFAULT_ML_COLOR: Colour = Colour::White;
 
 pub fn get_color_from_string(text: String) -> Colour {
+    /*example inputs:
+     "White"
+     "25, 25, 25"
+     "156"*/
     let text: &str = &text.to_lowercase();
     let text: &str = &text.replace(" ", "");
     let text: &str = &text.replace("\n", "");

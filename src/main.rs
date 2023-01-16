@@ -1,8 +1,10 @@
 use web_parser::{
     process_string::bond,
     static_data::structs::{ReqPair, StyleChild, StyleMain, TermmlMain},
-    webrequest::request::{fetch, get_filename},
+    // webrequest::request::{fetch, get_filename},
 };
+
+use renderer::request::webrequest::fetch;
 
 use hard_xml::{XmlRead, XmlWrite};
 use std::{alloc, collections::HashMap};
@@ -20,7 +22,7 @@ fn start() {
     let mut files: HashMap<String, String> = HashMap::new();
     let server_url = String::from("http://127.0.0.1:5500/");
     let url = format!("{}{}", server_url, "test.termml");
-    let _filename = get_filename(&url);
+    // let _filename = get_filename(&url);
     let mut termss_vec: Vec<String> = vec![];
     let fetched = match fetch(&url) {
         Ok(r) => r,
