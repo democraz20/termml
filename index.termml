@@ -7,7 +7,12 @@
         <div>Example Termml file</div>
     </head>
     <body>
-        <div>should have no problems parsing this</div>
+        <div>
+            should have no problems parsing this
+            testing multiline parse
+            <!--needs to fix tabs-->
+        </div>
         <div>and this too</div>
+        <div class="styles.termss::TEST2">this line has styles</div>
     </body>
 </main>

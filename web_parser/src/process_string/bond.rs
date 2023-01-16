@@ -1,7 +1,8 @@
-use std::{collections::HashMap, fs, hash};
+use std::collections::HashMap;
 
-use crate::static_data::structs::{Require, StyleChild, StyleMain, StyleSheet, TermmlMain, ReqPair};
-use ansi_term::Style;
+use crate::static_data::structs::{
+    ReqPair, Require, StyleChild, StyleMain, StyleSheet, TermmlMain,
+};
 use hard_xml::XmlRead;
 
 pub fn markup_entry(text: String) -> () {
@@ -14,36 +15,27 @@ pub fn markup_entry(text: String) -> () {
     };
     dbg!(&markup);
     let required_entry = markup.require;
-    let required = match required_entry {
+    let _required = match required_entry {
         Some(s) => s,
         None => {
             //needs error value for this
             Require {
                 stylesheet: vec![StyleSheet {
-                    // name: Some("styles.termss".into()),
-                    name: "styles.termss".into()
+                    name: "styles.termss".into(),
                 }],
             }
         }
     };
-    let requiredvec = required.stylesheet;
-    // let hashmap = styles_hash(requiredvec);
-    // dbg!(hashmap);
 }
 
-pub fn styles_hash(required: Vec<ReqPair>)
-    -> HashMap<String, StyleChild> {
+pub fn styles_hash(required: Vec<ReqPair>) -> HashMap<String, StyleChild> {
     //imagine a getter from Require termml page
     let mut stylesmap: HashMap<String, StyleChild> = HashMap::new();
 
     for stylesheet in required {
-
         let styles = parse_style_sheet(stylesheet.value);
         for i in styles.styles {
-            stylesmap.insert(
-                format!("{}::{}", stylesheet.name, i.class.clone()),
-                i,
-            );
+            stylesmap.insert(format!("{}::{}", stylesheet.name, i.class.clone()), i);
         }
     }
 
@@ -65,8 +57,24 @@ pub fn parse_style_sheet(file: String) -> StyleMain {
                     foreground: None,
                     underline: None,
                     bold: None,
+                    header: None,
                 }],
             }
         }
     }
+}
+pub fn remove_tabs(div: String) -> String {
+    let trim_start = div.trim_start_matches(|c| c == '\r');
+    let trim_start = trim_start.trim_start_matches(|c| c == '\n');
+    let mut check_end: String = trim_start.replace("    ", "").to_string().clone();
+    if check_end.ends_with('\n') {
+        let len1 = check_end.len();
+        let (s1, _) = check_end.split_at_mut(len1 - 1);
+        if s1.ends_with('\r') {
+            let len2 = s1.len();
+            let (s2, _) = s1.split_at_mut(len2 - 1);
+            return s2.to_string();
+        }
+    }
+    return trim_start.to_string();
 }

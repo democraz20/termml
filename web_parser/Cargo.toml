@@ -1,5 +1,5 @@
 [package]
-name = "termml"
+name = "web_parser"
 version = "0.1.0"
 edition = "2021"
 
@@ -16,12 +16,3 @@ toml = "0.5.9"
 hard-xml = "0.6"
 ureq = "2.5.0"
 crossterm = "0.25.0"
-renderer = { path = "renderer" }
-web_parser = { path = "web_parser" }
-
-
-[workspace]
-members = [
-    "renderer",
-    "web_parser"
-]
