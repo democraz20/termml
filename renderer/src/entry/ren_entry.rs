@@ -70,7 +70,6 @@ impl MainNavigator {
                 new_vec.push(d.clone());
             }
         }
-        dbg!(&new_vec);
         return new_vec;
     }
     fn split_by_len(text: String, len: usize) -> Vec<String> {

@@ -7,12 +7,9 @@ use web_parser::{
 use renderer::request::webrequest::fetch;
 
 use hard_xml::{XmlRead, XmlWrite};
-use std::{alloc, collections::HashMap};
+use std::collections::HashMap;
 
 //tracking memory usage
-use cap::Cap;
-#[global_allocator]
-static ALLOCATOR: Cap<alloc::System> = Cap::new(alloc::System, usize::max_value());
 fn main() {
     start();
 }
@@ -99,13 +96,5 @@ fn start() {
 
     renderer.debug(parsedml, hash);
     // renderer.entry(vec);
-    _alloced("End of main");
     // dbg!(styles_hash());
-}
-
-fn _alloced<T: std::fmt::Display>(header: T) -> () {
-    //only for development : not suppossed to be in actual build AT ALL
-    //in the future might add a choice to see if its a release or debug
-    //to decide the printing stdout
-    println!("{} | Allocated : {} B(ytes)", header, ALLOCATOR.allocated());
 }
