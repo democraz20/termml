@@ -1,7 +1,6 @@
 use web_parser::{
     process_string::bond,
     static_data::structs::{ReqPair, StyleChild, StyleMain, TermmlMain},
-    // webrequest::request::{fetch, get_filename},
 };
 
 use renderer::request::webrequest::fetch;
@@ -9,7 +8,6 @@ use renderer::request::webrequest::fetch;
 use hard_xml::{XmlRead, XmlWrite};
 use std::collections::HashMap;
 
-//tracking memory usage
 fn main() {
     start();
 }
