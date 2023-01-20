@@ -3,7 +3,7 @@ use crossterm::{
     event::{self, KeyCode, KeyEvent},
     execute,
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
-    Result,
+    Result, cursor::MoveTo,
 };
 use hard_xml::{XmlRead, XmlWrite};
 
@@ -93,12 +93,15 @@ impl MainNavigator {
             // println!("{}", i);
         }
         let hash = bond::styles_hash(read_style);
-        Self::entry(&self, parsedml, hash);
+        //returned result
+        let _ = Self::entry(&self, parsedml, hash);
     }
     pub fn entry(&self, termml: TermmlMain, stylemap: HashMap<String, StyleChild>) -> Result<()> {
         let _cleanup = CleanUp;
         execute!(stdout(), EnterAlternateScreen)?;
         terminal::enable_raw_mode()?;
+        execute!(stdout(), MoveTo(0,0))?;
+        let mut line_index: u32 = 0; //shouldnt go below 0
         loop {
             if event::poll(Duration::from_millis(1000))? {
                 if let Event::Key(event) = event::read()? {
@@ -114,12 +117,29 @@ impl MainNavigator {
                         }
                         KeyEvent {
                             code: KeyCode::Esc,
-                            modifiers: event::KeyModifiers::NONE,
-                            ..
+                            modifiers: event::KeyModifiers::NONE,..
                         } => {
                             println!("ESC pressed, doing cleanup");
                             Self::cleanup()?;
                             break;
+                        }
+
+                        KeyEvent {
+                            code: KeyCode::Up, ..
+                        } => {
+                            if line_index >= 1 {
+                                line_index-=1; 
+                                println!("line_index: {}", line_index);
+                            }
+                            else if line_index == 0 {
+                                println!("line_index: {}", line_index);
+                            }
+                        }
+                        KeyEvent {
+                            code: KeyCode::Down, ..
+                        } => {
+                            line_index+=1; 
+                            println!("line_index: {}", line_index);
                         }
                         _ => {}
                     }
