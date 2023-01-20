@@ -93,6 +93,7 @@ impl MainNavigator {
             // println!("{}", i);
         }
         let hash = bond::styles_hash(read_style);
+        Self::entry(&self, parsedml, hash);
     }
     pub fn entry(&self, termml: TermmlMain, stylemap: HashMap<String, StyleChild>) -> Result<()> {
         let _cleanup = CleanUp;
