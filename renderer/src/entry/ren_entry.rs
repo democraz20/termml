@@ -93,16 +93,31 @@ impl MainNavigator {
             // println!("{}", i);
         }
         let hash = bond::styles_hash(read_style);
-        //returned result
+        // let resizedml = Self::resize_markup(parsedml, width)
+
         let _ = Self::entry(&self, parsedml, hash);
     }
-    pub fn entry(&self, termml: TermmlMain, stylemap: HashMap<String, StyleChild>) -> Result<()> {
+    pub fn entry(&self, mut termml: TermmlMain, stylemap: HashMap<String, StyleChild>) -> Result<()> {
         let _cleanup = CleanUp;
         execute!(stdout(), EnterAlternateScreen)?;
         terminal::enable_raw_mode()?;
         execute!(stdout(), MoveTo(0,0))?;
         let mut line_index: u32 = 0; //shouldnt go below 0
+        let (mut column, mut rows) = crossterm::terminal::size().unwrap();
         loop {
+            let (c, r) = crossterm::terminal::size().unwrap();
+            if c != column || r != rows {
+                column = c;
+                rows = r;
+                let head = termml.head.value.clone();
+                termml.head.value = Self::resize_markup(
+                    vec![head], column
+                )[0].clone();
+                let divs = termml.body.value.clone();
+                termml.body.value = Self::resize_markup(
+                    divs, column
+                );
+            }
             if event::poll(Duration::from_millis(1000))? {
                 if let Event::Key(event) = event::read()? {
                     match event {
@@ -149,7 +164,7 @@ impl MainNavigator {
         println!("Running cleanup code");
         Ok(())
     }
-    pub fn resize_markup<'a>(original: &'a Vec<Div>, width: u16) -> Vec<Div<'a>> {
+    pub fn resize_markup(original: Vec<Div>, width: u16) -> Vec<Div<>> {
         let mut new_vec: Vec<Div> = vec![];
         for (_, d) in original.clone().iter_mut().enumerate() {
             let text = d.clone().value;
