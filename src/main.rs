@@ -9,8 +9,6 @@ fn start() {
     //liverserver's url
     main_renderer.getter(url);
 
-
-
     // dbg!(&resized);
     // let termml_vec = construct_termml_vec(parsedml.clone(), hash.clone());
     // dbg!(termml_vec);

@@ -41,9 +41,7 @@ impl DebugRenderer {
                         None => Self::print_plain(i.value),
                     }
                 }
-                None => {
-                    Self::print_plain(i.value)
-                }
+                None => Self::print_plain(i.value),
             }
         }
         println!("======[end debug renderer]======");

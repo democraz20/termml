@@ -1,13 +1,17 @@
 use crossterm::{
+    cursor::MoveTo,
     event::Event,
     event::{self, KeyCode, KeyEvent},
     execute,
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
-    Result, cursor::MoveTo,
+    Result,
 };
 use hard_xml::{XmlRead, XmlWrite};
 
-use web_parser::{static_data::structs::{Div, StyleChild, TermmlMain, ReqPair, StyleMain}, process_string::bond};
+use web_parser::{
+    process_string::bond,
+    static_data::structs::{Div, ReqPair, StyleChild, StyleMain, TermmlMain},
+};
 
 use std::{collections::HashMap, io::stdout, time::Duration};
 
@@ -35,16 +39,24 @@ impl MainNavigator {
                 match e {
                     ureq::Error::Status(code, response) => {
                         //Termml to_string goes here
-                        TermmlMain::fetch_error(url.as_str(), Some(response.status_text()), Some(code))
-                            .to_string()
-                            .unwrap()
+                        TermmlMain::fetch_error(
+                            url.as_str(),
+                            Some(response.status_text()),
+                            Some(code),
+                        )
+                        .to_string()
+                        .unwrap()
                     }
                     ureq::Error::Transport(transport) => {
                         //Termml to_string goes here
                         transport.to_string();
-                        TermmlMain::fetch_error(url.as_str(), Some(transport.kind().to_string()), None)
-                            .to_string()
-                            .unwrap()
+                        TermmlMain::fetch_error(
+                            url.as_str(),
+                            Some(transport.kind().to_string()),
+                            None,
+                        )
+                        .to_string()
+                        .unwrap()
                     }
                 }
             }
@@ -56,7 +68,7 @@ impl MainNavigator {
             Ok(r) => r,
             Err(e) => TermmlMain::parse_error(binding.as_str(), e),
         };
-    
+
         //cache main toml file
         files.insert(url.clone(), fetched);
         let mut read_style: Vec<ReqPair> = vec![];
@@ -97,11 +109,15 @@ impl MainNavigator {
 
         let _ = Self::entry(&self, parsedml, hash);
     }
-    pub fn entry(&self, mut termml: TermmlMain, stylemap: HashMap<String, StyleChild>) -> Result<()> {
+    pub fn entry(
+        &self,
+        mut termml: TermmlMain,
+        stylemap: HashMap<String, StyleChild>,
+    ) -> Result<()> {
         let _cleanup = CleanUp;
         execute!(stdout(), EnterAlternateScreen)?;
         terminal::enable_raw_mode()?;
-        execute!(stdout(), MoveTo(0,0))?;
+        execute!(stdout(), MoveTo(0, 0))?;
         let mut line_index: u32 = 0; //shouldnt go below 0
         let (mut column, mut rows) = crossterm::terminal::size().unwrap();
         loop {
@@ -110,13 +126,9 @@ impl MainNavigator {
                 column = c;
                 rows = r;
                 let head = termml.head.value.clone();
-                termml.head.value = Self::resize_markup(
-                    vec![head], column
-                )[0].clone();
+                termml.head.value = Self::resize_markup(vec![head], column)[0].clone();
                 let divs = termml.body.value.clone();
-                termml.body.value = Self::resize_markup(
-                    divs, column
-                );
+                termml.body.value = Self::resize_markup(divs, column);
             }
             if event::poll(Duration::from_millis(1000))? {
                 if let Event::Key(event) = event::read()? {
@@ -132,7 +144,8 @@ impl MainNavigator {
                         }
                         KeyEvent {
                             code: KeyCode::Esc,
-                            modifiers: event::KeyModifiers::NONE,..
+                            modifiers: event::KeyModifiers::NONE,
+                            ..
                         } => {
                             println!("ESC pressed, doing cleanup");
                             Self::cleanup()?;
@@ -143,17 +156,17 @@ impl MainNavigator {
                             code: KeyCode::Up, ..
                         } => {
                             if line_index >= 1 {
-                                line_index-=1; 
+                                line_index -= 1;
                                 println!("line_index: {}", line_index);
-                            }
-                            else if line_index == 0 {
+                            } else if line_index == 0 {
                                 println!("line_index: {}", line_index);
                             }
                         }
                         KeyEvent {
-                            code: KeyCode::Down, ..
+                            code: KeyCode::Down,
+                            ..
                         } => {
-                            line_index+=1; 
+                            line_index += 1;
                             println!("line_index: {}", line_index);
                         }
                         _ => {}
@@ -164,7 +177,7 @@ impl MainNavigator {
         println!("Running cleanup code");
         Ok(())
     }
-    pub fn resize_markup(original: Vec<Div>, width: u16) -> Vec<Div<>> {
+    pub fn resize_markup(original: Vec<Div>, width: u16) -> Vec<Div> {
         let mut new_vec: Vec<Div> = vec![];
         for (_, d) in original.clone().iter_mut().enumerate() {
             let text = d.clone().value;
