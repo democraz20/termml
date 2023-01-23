@@ -123,12 +123,26 @@ impl MainNavigator {
         loop {
             let (c, r) = crossterm::terminal::size().unwrap();
             if c != column || r != rows {
+                //terminal resized
                 column = c;
                 rows = r;
                 let head = termml.head.value.clone();
                 termml.head.value = Self::resize_markup(vec![head], column)[0].clone();
                 let divs = termml.body.value.clone();
                 termml.body.value = Self::resize_markup(divs, column);
+
+                let mut buf: Vec<Div> = vec![]; //because the terminal resized
+                for i in 0..r { //for how many rows there are on the screen
+                    //making sure the indexes dont go beyond buffer len
+                    //including when it is iterating
+                    if line_index < buf.len() as u32 && (line_index+i as u32) < (buf.len() as u32) {
+                        
+                    }
+                }
+                
+                if line_index > buf.len() as u32 {
+                    line_index = buf.len() as u32
+                }
             }
             if event::poll(Duration::from_millis(1000))? {
                 if let Event::Key(event) = event::read()? {
@@ -151,7 +165,6 @@ impl MainNavigator {
                             Self::cleanup()?;
                             break;
                         }
-
                         KeyEvent {
                             code: KeyCode::Up, ..
                         } => {
@@ -161,6 +174,7 @@ impl MainNavigator {
                             } else if line_index == 0 {
                                 println!("line_index: {}", line_index);
                             }
+                            //navigation code, call re write buffer
                         }
                         KeyEvent {
                             code: KeyCode::Down,
@@ -168,7 +182,9 @@ impl MainNavigator {
                         } => {
                             line_index += 1;
                             println!("line_index: {}", line_index);
+                            //navigation code, call re write buffer
                         }
+                        //idle
                         _ => {}
                     }
                 }
