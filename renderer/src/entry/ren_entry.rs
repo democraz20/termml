@@ -132,14 +132,15 @@ impl MainNavigator {
                 termml.body.value = Self::resize_markup(divs, column);
 
                 let mut buf: Vec<Div> = vec![]; //because the terminal resized
-                for i in 0..r { //for how many rows there are on the screen
+                for i in 0..r {
+                    //for how many rows there are on the screen
                     //making sure the indexes dont go beyond buffer len
                     //including when it is iterating
-                    if line_index < buf.len() as u32 && (line_index+i as u32) < (buf.len() as u32) {
-                        
+                    if line_index < buf.len() as u32 && (line_index + i as u32) < (buf.len() as u32)
+                    {
                     }
                 }
-                
+
                 if line_index > buf.len() as u32 {
                     line_index = buf.len() as u32
                 }
