@@ -17,10 +17,12 @@ ureq = "2.5.0"
 crossterm = "0.25.0"
 renderer = { path = "renderer" }
 web_parser = { path = "web_parser" }
+debug = { path = "debug" }
 
 
 [workspace]
 members = [
     "renderer",
-    "web_parser"
+    "web_parser",
+    "debug"
 ]
