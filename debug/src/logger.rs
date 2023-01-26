@@ -10,6 +10,10 @@ pub struct Logger {
 
 impl Logger {
     pub fn new(&self, title: &str, path: &str, resave: bool) -> Logger {
+        //clean text input
+        let mut title = title.replace("\n", "");
+        title = title.replace("\r", "");
+
         Logger {
             contents: vec![self.log_title.to_string()],
             log_title: title.to_string(),
@@ -39,5 +43,19 @@ impl Logger {
             }
         }
         Ok(())
+    }
+    pub fn add(&mut self, content: &str) {
+        //clean the content
+        let mut content = content.replace("\n", "");
+        content = content.replace("\r", "");
+        //verify
+        if self.contents.len() == 0 {
+            self.contents.push(self.log_title.to_string());
+            self.contents.push(content.to_string());
+        }
+        //more than 0 //cannot go below 0
+        else {
+            self.contents.push(content.to_string());
+        }
     }
 }
