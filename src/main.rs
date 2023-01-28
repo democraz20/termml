@@ -6,11 +6,6 @@ fn main() {
 
 fn start() {
     //caching
-    let mut test_logger = Logger::new("test logger", "logtest.log", true);
-    for i in 0..10 {
-        test_logger.add(&format!("test: {}", i));
-    }
-    test_logger.save().unwrap();
     let main_renderer = renderer::entry::ren_entry::MainNavigator;
     let url = String::from("http://127.0.0.1:5500/");
     //liverserver's url

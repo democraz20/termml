@@ -6,6 +6,7 @@ use crossterm::{
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
     Result,
 };
+use debug::logger::Logger;
 use hard_xml::{XmlRead, XmlWrite};
 
 use web_parser::{
@@ -120,27 +121,51 @@ impl MainNavigator {
         execute!(stdout(), MoveTo(0, 0))?;
         let mut line_index: u32 = 0; //shouldnt go below 0
         let (mut column, mut rows) = crossterm::terminal::size().unwrap();
+        let mut logger = Logger::new("bufferlog", "buffer.log", true);
+        //init
         loop {
             let (c, r) = crossterm::terminal::size().unwrap();
             if c != column || r != rows {
                 //terminal resized
+                println!("terminal resized c:{},r:{}", c, r);
                 column = c;
                 rows = r;
                 let head = termml.head.value.clone();
                 termml.head.value = Self::resize_markup(vec![head], column)[0].clone();
                 let divs = termml.body.value.clone();
                 termml.body.value = Self::resize_markup(divs, column);
+                let mut testlog = Logger::new("test", "test.log", true);
+                println!("===\n\n{:?}", termml.body.value.clone());
+                for i in termml.body.value.clone() {
+                    testlog.add(&format!("{}", i.value));
+                }
+                testlog.save()?;
 
                 let mut buf: Vec<Div> = vec![]; //because the terminal resized
                 for i in 0..r {
+                    if (i as usize) < termml.body.value.len() {
+                        buf.push(termml.body.value[i as usize].clone());
+                        logger.add(&format!("{}", termml.body.value[i as usize].value.clone()));
+                        // println!("pushed: {}", termml.body.value[i as usize].value.clone());
+                    }
                     //for how many rows there are on the screen
                     //making sure the indexes dont go beyond buffer len
                     //including when it is iterating
-                    if line_index < buf.len() as u32 && (line_index + i as u32) < (buf.len() as u32)
-                    {
-                    }
-                }
 
+                    // println!("{:?},{:?}",
+                    // line_index < buf.len() as u32,
+                    // (line_index+1) < buf.len() as u32);
+                    // println!("index: {}, buflen: {}", line_index, buf.len());
+                    // println!("c    : {}, r     : {}", c, r);
+                    // if line_index < buf.len() as u32  
+                    // {
+                    //     buf.push(termml.body.value[i as usize].clone());
+                    //     logger.add(&format!("{}", termml.body.value[i as usize].value.clone()));
+                    //     println!("pushed: {}", termml.body.value[i as usize].value.clone());
+                    // }
+                }
+                logger.save()?;
+                println!("saved log");
                 if line_index > buf.len() as u32 {
                     line_index = buf.len() as u32
                 }

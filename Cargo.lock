@@ -297,6 +297,7 @@ version = "0.1.0"
 dependencies = [
  "ansi_term",
  "crossterm",
+ "debug",
  "hard-xml",
  "toml",
  "ureq",

@@ -12,3 +12,4 @@ ureq = "2.5.0"
 toml = "0.5.9"
 hard-xml = "0.6"
 web_parser = { path = "../web_parser" }
+debug = { path = "../debug" }
