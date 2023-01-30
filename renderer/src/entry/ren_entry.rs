@@ -19,7 +19,7 @@ use std::{collections::HashMap, io::stdout, time::Duration};
 use crate::request::webrequest::fetch;
 pub struct MainNavigator;
 
-mod split_chunk;
+pub mod split_chunk;
 use split_chunk::CharChunksTrait;
 struct CleanUp;
 impl Drop for CleanUp {
@@ -241,7 +241,7 @@ impl MainNavigator {
         return new_vec;
     }
     fn split_by_len(text: String, len: usize) -> Vec<String> {
-        return text.as_str().char_chunks(len).map(String::from).collect::<Vec<_>>();
+        return text.char_chunks(len).map(String::from).collect::<Vec<_>>();
     }
     fn cleanup() -> Result<()> {
         execute!(stdout(), LeaveAlternateScreen)?;
