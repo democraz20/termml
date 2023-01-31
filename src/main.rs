@@ -6,7 +6,6 @@ fn main() {
 
 use renderer::entry::ren_entry::split_chunk::CharChunksTrait;
 
-
 fn start() {
     //testing split
     let t = "aaabbbcccdddeeefffggg";

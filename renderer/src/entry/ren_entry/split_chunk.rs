@@ -33,11 +33,15 @@ impl<'a> CharChunks<'a> {
 
 impl<'a> Iterator for CharChunks<'a> {
     type Item = &'a str;
-    
+
     fn next(&mut self) -> Option<Self::Item> {
         let (start, _) = self.iter.next()?;
-        let end = self.iter.peek().map(|&(end, _)| end).unwrap_or(self.str.len());
-        
+        let end = self
+            .iter
+            .peek()
+            .map(|&(end, _)| end)
+            .unwrap_or(self.str.len());
+
         Some(&self.str[start..end])
     }
 }

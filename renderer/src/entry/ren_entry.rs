@@ -159,7 +159,7 @@ impl MainNavigator {
                     // (line_index+1) < buf.len() as u32);
                     // println!("index: {}, buflen: {}", line_index, buf.len());
                     // println!("c    : {}, r     : {}", c, r);
-                    // if line_index < buf.len() as u32  
+                    // if line_index < buf.len() as u32
                     // {
                     //     buf.push(termml.body.value[i as usize].clone());
                     //     logger.add(&format!("{}", termml.body.value[i as usize].value.clone()));
