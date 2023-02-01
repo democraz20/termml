@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use crate::entry::ren_entry::MainNavigator;
+
 use web_parser::process_string::bond::remove_tabs;
 use web_parser::static_data::{
     structs::{StyleChild, TermmlMain},
@@ -45,6 +47,52 @@ impl DebugRenderer {
             }
         }
         println!("======[end debug renderer]======");
+    }
+    pub fn temp(&self, markup: TermmlMain, stylesmap: HashMap<String, StyleChild>) {
+        println!("=====[start debug renderer]=====");
+        let body_divs = markup.body.value;
+        let head_div  = markup.head.value;
+        let (mut column, mut rows) = crossterm::terminal::size().unwrap();
+        let mut count = 0;
+        loop {
+            let (c, r) = crossterm::terminal::size().unwrap();
+            if c != column || r != rows { //term size changed
+                count += 1;
+                column = c;
+                rows = r;
+                println!("===[cycle : {count}]===");
+                let body = MainNavigator::resize_markup(body_divs.clone(), c);
+                let head = MainNavigator::resize_markup(vec![head_div.clone()], c)[0].clone();
+                match head.class {
+                    Some(c) => {
+                        let k: String = c.into();
+                        let cl = stylesmap.get(&k);
+                        let style = cl.cloned();
+                        drop(cl);
+                        match style {
+                            Some(style) => Self::print_style(head.value.to_string(), style),
+                            None => Self::print_plain(head.value)
+                        }
+                    }
+                    None => Self::print_plain(head.value)
+                }
+                for i in body {
+                    match i.class {
+                        Some(c) => {
+                            let k: String = c.into();
+                            let cl = stylesmap.get(&k);
+                            let style = cl.cloned();
+                            drop(cl);
+                            match style {
+                                Some(style) => Self::print_style(i.value.to_string(), style),
+                                None => Self::print_plain(i.value)
+                            }
+                        }
+                        None => Self::print_plain(i.value)
+                    }
+                }
+            }
+        }
     }
 
     fn print_plain<T: std::fmt::Display>(text: T) {

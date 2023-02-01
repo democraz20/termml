@@ -9,13 +9,12 @@ use renderer::entry::ren_entry::split_chunk::CharChunksTrait;
 fn start() {
     //testing split
     let t = "aaabbbcccdddeeefffggg";
-    println!("{:?}", t.char_chunks(6).collect::<Vec<_>>());
-
+    println!("{:?}", t.char_chunks(3).collect::<Vec<_>>());
     //caching
     let main_renderer = renderer::entry::ren_entry::MainNavigator;
     let url = String::from("http://127.0.0.1:5500/");
     //liverserver's url
-    main_renderer.getter(url);
+    main_renderer.getter(url, true);
 
     // dbg!(&resized);
     // let termml_vec = construct_termml_vec(parsedml.clone(), hash.clone());

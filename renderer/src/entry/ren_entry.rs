@@ -16,7 +16,7 @@ use web_parser::{
 
 use std::{collections::HashMap, io::stdout, time::Duration};
 
-use crate::request::webrequest::fetch;
+use crate::{request::webrequest::fetch, debug::ren_debug};
 pub struct MainNavigator;
 
 pub mod split_chunk;
@@ -30,7 +30,7 @@ impl Drop for CleanUp {
 }
 
 impl MainNavigator {
-    pub fn getter(&self, server_url: String) {
+    pub fn getter(&self, server_url: String, dbg: bool) {
         let mut files: HashMap<String, String> = HashMap::new();
         // let server_url = String::from("http://127.0.0.1:5500/");
         let url = format!("{}{}", server_url, "test.termml");
@@ -110,7 +110,14 @@ impl MainNavigator {
         let hash = bond::styles_hash(read_style);
         // let resizedml = Self::resize_markup(parsedml, width)
 
-        let _ = Self::entry(&self, parsedml, hash);
+        //just for ease of debug
+        match dbg {
+            false => {let _ = Self::entry(&self, parsedml, hash);},
+            true => {
+                let d = crate::debug::ren_debug::DebugRenderer;
+                d.temp(parsedml, hash)
+            }
+        }
     }
     pub fn entry(
         &self,
@@ -132,10 +139,13 @@ impl MainNavigator {
                 println!("terminal resized c:{},r:{}", c, r);
                 column = c;
                 rows = r;
+
+                //to fix this later, this would not allow it to be resized back to original
                 let head = termml.head.value.clone();
                 termml.head.value = Self::resize_markup(vec![head], column)[0].clone();
                 let divs = termml.body.value.clone();
                 termml.body.value = Self::resize_markup(divs, column);
+                
                 let mut testlog = Logger::new("test", "test.log", true);
                 println!("===\n\n{:?}", termml.body.value.clone());
                 for i in termml.body.value.clone() {
