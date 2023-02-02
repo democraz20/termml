@@ -51,16 +51,18 @@ impl DebugRenderer {
     pub fn temp(&self, markup: TermmlMain, stylesmap: HashMap<String, StyleChild>) {
         println!("=====[start debug renderer]=====");
         let body_divs = markup.body.value;
-        let head_div  = markup.head.value;
+        let head_div = markup.head.value;
         let (mut column, mut rows) = crossterm::terminal::size().unwrap();
         let mut count = 0;
         loop {
             let (c, r) = crossterm::terminal::size().unwrap();
-            if c != column || r != rows { //term size changed
+            if c != column || r != rows {
+                //term size changed
                 count += 1;
                 column = c;
                 rows = r;
-                println!("===[cycle : {count}]===");
+                println!("|===[cycle : {count}]===|");
+                println!("|===[c : {c},r : {r}]===|");
                 let body = MainNavigator::resize_markup(body_divs.clone(), c);
                 let head = MainNavigator::resize_markup(vec![head_div.clone()], c)[0].clone();
                 match head.class {
@@ -71,10 +73,10 @@ impl DebugRenderer {
                         drop(cl);
                         match style {
                             Some(style) => Self::print_style(head.value.to_string(), style),
-                            None => Self::print_plain(head.value)
+                            None => Self::print_plain(head.value),
                         }
                     }
-                    None => Self::print_plain(head.value)
+                    None => Self::print_plain(head.value),
                 }
                 for i in body {
                     match i.class {
@@ -85,10 +87,10 @@ impl DebugRenderer {
                             drop(cl);
                             match style {
                                 Some(style) => Self::print_style(i.value.to_string(), style),
-                                None => Self::print_plain(i.value)
+                                None => Self::print_plain(i.value),
                             }
                         }
-                        None => Self::print_plain(i.value)
+                        None => Self::print_plain(i.value),
                     }
                 }
             }

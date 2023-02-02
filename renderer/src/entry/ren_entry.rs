@@ -16,7 +16,7 @@ use web_parser::{
 
 use std::{collections::HashMap, io::stdout, time::Duration};
 
-use crate::{request::webrequest::fetch, debug::ren_debug};
+use crate::{debug::ren_debug, request::webrequest::fetch};
 pub struct MainNavigator;
 
 pub mod split_chunk;
@@ -112,7 +112,9 @@ impl MainNavigator {
 
         //just for ease of debug
         match dbg {
-            false => {let _ = Self::entry(&self, parsedml, hash);},
+            false => {
+                let _ = Self::entry(&self, parsedml, hash);
+            }
             true => {
                 let d = crate::debug::ren_debug::DebugRenderer;
                 d.temp(parsedml, hash)
@@ -145,7 +147,7 @@ impl MainNavigator {
                 termml.head.value = Self::resize_markup(vec![head], column)[0].clone();
                 let divs = termml.body.value.clone();
                 termml.body.value = Self::resize_markup(divs, column);
-                
+
                 let mut testlog = Logger::new("test", "test.log", true);
                 println!("===\n\n{:?}", termml.body.value.clone());
                 for i in termml.body.value.clone() {
