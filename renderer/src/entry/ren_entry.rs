@@ -133,6 +133,8 @@ impl MainNavigator {
         let mut line_index: u32 = 0; //shouldnt go below 0
         let (mut column, mut rows) = crossterm::terminal::size().unwrap();
         let mut logger = Logger::new("bufferlog", "buffer.log", true);
+        let bodys = termml.body.value.clone();
+        let head = termml.head.value.clone();
         //init
         loop {
             let (c, r) = crossterm::terminal::size().unwrap();
@@ -141,13 +143,6 @@ impl MainNavigator {
                 println!("terminal resized c:{},r:{}", c, r);
                 column = c;
                 rows = r;
-
-                //to fix this later, this would not allow it to be resized back to original
-                let head = termml.head.value.clone();
-                termml.head.value = Self::resize_markup(vec![head], column)[0].clone();
-                let divs = termml.body.value.clone();
-                termml.body.value = Self::resize_markup(divs, column);
-
                 let mut testlog = Logger::new("test", "test.log", true);
                 println!("===\n\n{:?}", termml.body.value.clone());
                 for i in termml.body.value.clone() {
