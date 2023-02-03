@@ -133,18 +133,26 @@ impl MainNavigator {
         let mut line_index: u32 = 0; //shouldnt go below 0
         let (mut column, mut rows) = crossterm::terminal::size().unwrap();
         let mut logger = Logger::new("bufferlog", "buffer.log", true);
-        let bodys = termml.body.value.clone();
-        let head = termml.head.value.clone();
+        let mut bodys = termml.body.value.clone();
+        let mut head = termml.head.value.clone();
         //init
         loop {
             let (c, r) = crossterm::terminal::size().unwrap();
             if c != column || r != rows {
+                // terminal::Clear(terminal::ClearType::All);
+                print!("\x1B[2J\x1B[1;1H");
                 //terminal resized
                 println!("terminal resized c:{},r:{}", c, r);
                 column = c;
                 rows = r;
                 let mut testlog = Logger::new("test", "test.log", true);
-                println!("===\n\n{:?}", termml.body.value.clone());
+                bodys = Self::resize_markup(termml.body.value.clone(), c);
+                //to add head
+
+                // println!("===\n\n{:?}", termml.body.value.clone());
+                for i in &bodys {
+                    println!("{}", i.value);
+                }
                 for i in termml.body.value.clone() {
                     testlog.add(&format!("{}", i.value));
                 }
@@ -174,7 +182,6 @@ impl MainNavigator {
                     // }
                 }
                 logger.save()?;
-                println!("saved log");
                 if line_index > buf.len() as u32 {
                     line_index = buf.len() as u32
                 }
@@ -233,7 +240,6 @@ impl MainNavigator {
         for (_, d) in original.clone().iter_mut().enumerate() {
             let text = d.clone().value;
             if text.len() > width.into() {
-                println!("text is longer");
                 let splitted = Self::split_by_len(text.to_string(), width.into());
                 for i in splitted {
                     new_vec.push(Div {
