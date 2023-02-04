@@ -140,7 +140,7 @@ impl MainNavigator {
             let (c, r) = crossterm::terminal::size().unwrap();
             if c != column || r != rows {
                 // terminal::Clear(terminal::ClearType::All);
-                print!("\x1B[2J\x1B[1;1H");
+                Self::clear_screen();
                 //terminal resized
                 println!("terminal resized c:{},r:{}", c, r);
                 column = c;
@@ -252,6 +252,11 @@ impl MainNavigator {
             }
         }
         return new_vec;
+    }
+    fn clear_screen() {
+        //moves to (1, 1)
+        //clears all cells below and after
+        print!("\x1B[2J\x1B[1;1H");
     }
     fn split_by_len(text: String, len: usize) -> Vec<String> {
         return text.char_chunks(len).map(String::from).collect::<Vec<_>>();
