@@ -16,7 +16,7 @@ use web_parser::{
 
 use std::{collections::HashMap, io::stdout, time::Duration};
 
-use crate::{debug::ren_debug, request::webrequest::fetch};
+use crate::request::webrequest::fetch;
 pub struct MainNavigator;
 
 pub mod split_chunk;
@@ -123,7 +123,7 @@ impl MainNavigator {
     }
     pub fn entry(
         &self,
-        mut termml: TermmlMain,
+        termml: TermmlMain,
         stylemap: HashMap<String, StyleChild>,
     ) -> Result<()> {
         let _cleanup = CleanUp;
@@ -145,18 +145,14 @@ impl MainNavigator {
                 println!("terminal resized c:{},r:{}", c, r);
                 column = c;
                 rows = r;
-                let mut testlog = Logger::new("test", "test.log", true);
                 bodys = Self::resize_markup(termml.body.value.clone(), c);
                 //to add head
 
                 // println!("===\n\n{:?}", termml.body.value.clone());
                 for i in &bodys {
+                    logger.add(&i.value);
                     println!("{}", i.value);
                 }
-                for i in termml.body.value.clone() {
-                    testlog.add(&format!("{}", i.value));
-                }
-                testlog.save()?;
 
                 let mut buf: Vec<Div> = vec![]; //because the terminal resized
                 for i in 0..r {

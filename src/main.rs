@@ -1,5 +1,3 @@
-use debug::logger::Logger;
-
 fn main() {
     start();
 }
