@@ -132,7 +132,7 @@ impl MainNavigator {
         execute!(stdout(), MoveTo(0, 0))?;
         let mut line_index: u32 = 0; //shouldnt go below 0
         let (mut column, mut rows) = crossterm::terminal::size().unwrap();
-        let mut logger = Logger::new("bufferlog", "buffer.log", true);
+        let mut logger = Logger::new("bufferlog", "buffer.log", true, true);
         let mut bodys = termml.body.value.clone();
         let mut head = termml.head.value.clone();
         //init
