@@ -76,7 +76,6 @@ impl MainNavigator {
         files.insert(url.clone(), fetched);
         let mut read_style: Vec<ReqPair> = vec![];
         for i in parsedml.require.clone() {
-            // dbg!(i.stylesheet);
             let stlyesheet = i.stylesheet;
             for styleiter in stlyesheet {
                 println!("Required TERMSS : {}", styleiter.name);
@@ -105,11 +104,8 @@ impl MainNavigator {
                 }
                 files.insert(req_url, fetched);
             }
-            // println!("{}", i);
         }
         let hash = bond::styles_hash(read_style);
-        // let resizedml = Self::resize_markup(parsedml, width)
-
         //just for ease of debug
         match dbg {
             false => {
@@ -139,7 +135,6 @@ impl MainNavigator {
         loop {
             let (c, r) = crossterm::terminal::size().unwrap();
             if c != column || r != rows {
-                // terminal::Clear(terminal::ClearType::All);
                 Self::clear_screen();
                 //terminal resized
                 println!("terminal resized c:{},r:{}", c, r);
@@ -147,8 +142,6 @@ impl MainNavigator {
                 rows = r;
                 bodys = Self::resize_markup(termml.body.value.clone(), c);
                 //to add head
-
-                // println!("===\n\n{:?}", termml.body.value.clone());
                 for i in &bodys {
                     logger.add(&i.value);
                     println!("{}", i.value);
@@ -159,7 +152,6 @@ impl MainNavigator {
                     if (i as usize) < termml.body.value.len() {
                         buf.push(termml.body.value[i as usize].clone());
                         logger.add(&format!("{}", termml.body.value[i as usize].value.clone()));
-                        // println!("pushed: {}", termml.body.value[i as usize].value.clone());
                     }
                     //for how many rows there are on the screen
                     //making sure the indexes dont go beyond buffer len
