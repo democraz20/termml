@@ -10,7 +10,7 @@ pub struct Logger {
 }
 
 impl Logger {
-    pub fn new(title: &str, path: &str,clearinit: bool, resave: bool) -> Logger {
+    pub fn new(title: &str, path: &str, clearinit: bool, resave: bool) -> Logger {
         //clean text input
         let mut title = title.replace("\n", "");
         title = title.replace("\r", "");

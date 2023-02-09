@@ -117,11 +117,7 @@ impl MainNavigator {
             }
         }
     }
-    pub fn entry(
-        &self,
-        termml: TermmlMain,
-        stylemap: HashMap<String, StyleChild>,
-    ) -> Result<()> {
+    pub fn entry(&self, termml: TermmlMain, stylemap: HashMap<String, StyleChild>) -> Result<()> {
         let _cleanup = CleanUp;
         execute!(stdout(), EnterAlternateScreen)?;
         terminal::enable_raw_mode()?;
