@@ -11,13 +11,16 @@ use hard_xml::{XmlRead, XmlWrite};
 
 use web_parser::{
     process_string::bond,
-    static_data::{structs::{Div, ReqPair, StyleChild, StyleMain, TermmlMain}, self},
+    static_data::{
+        self,
+        structs::{Div, ReqPair, StyleChild, StyleMain, TermmlMain},
+    },
 };
 
 use std::{collections::HashMap, io::stdout, time::Duration};
 
-use crate::request::webrequest::fetch;
 use crate::defaults::fetch_error;
+use crate::request::webrequest::fetch;
 pub struct MainNavigator;
 
 pub mod split_chunk;
@@ -43,24 +46,16 @@ impl MainNavigator {
                 match e {
                     ureq::Error::Status(code, response) => {
                         //Termml to_string goes here
-                        fetch_error(
-                            url.as_str(),
-                            Some(response.status_text()),
-                            Some(code),
-                        )
-                        .to_string()
-                        .unwrap()
+                        fetch_error(url.as_str(), Some(response.status_text()), Some(code))
+                            .to_string()
+                            .unwrap()
                     }
                     ureq::Error::Transport(transport) => {
                         //Termml to_string goes here
                         transport.to_string();
-                        fetch_error(
-                            url.as_str(),
-                            Some(transport.kind().to_string()),
-                            None,
-                        )
-                        .to_string()
-                        .unwrap()
+                        fetch_error(url.as_str(), Some(transport.kind().to_string()), None)
+                            .to_string()
+                            .unwrap()
                     }
                 }
             }

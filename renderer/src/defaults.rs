@@ -1,12 +1,8 @@
-use web_parser::static_data::structs::{TermmlMain, Doctype, Head, Body, Div};
+use web_parser::static_data::structs::{Body, Div, Doctype, Head, TermmlMain};
 
 // pub mod ren_defaults {
-    pub fn fetch_error<T: std::fmt::Display>(
-        url: &str,
-        e: Option<T>,
-        code: Option<u16>,
-    ) -> TermmlMain {
-        TermmlMain {
+pub fn fetch_error<T: std::fmt::Display>(url: &str, e: Option<T>, code: Option<u16>) -> TermmlMain {
+    TermmlMain {
             doctype: Doctype {
                 ml: "termml".into(),
             },
@@ -44,5 +40,5 @@ use web_parser::static_data::structs::{TermmlMain, Doctype, Head, Body, Div};
                 ],
             },
         }
-    }
+}
 // }

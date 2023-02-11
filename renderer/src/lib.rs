@@ -1,7 +1,7 @@
 pub mod debug;
+pub mod defaults;
 pub mod entry;
 pub mod request;
-pub mod defaults;
 
 #[cfg(test)]
 mod tests {}
