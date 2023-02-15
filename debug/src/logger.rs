@@ -23,7 +23,8 @@ impl Logger {
                     clear_init: clearinit,
                 }
             }
-            false => { //dont clear the log on init
+            false => {
+                //dont clear the log on init
                 let old_content: Vec<String> = match fs::read_to_string(path) {
                     Err(_) => Vec::new(),
                     Ok(r) => {
@@ -41,10 +42,9 @@ impl Logger {
                     log_title: title.to_string(),
                     save_path: path.to_string(),
                     clear_init: clearinit,
-                }
+                };
             }
         }
-
     }
     pub fn save(&mut self) -> Result<(), std::io::Error> {
         let content = self.contents.join("\n");
