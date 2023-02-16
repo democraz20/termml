@@ -14,11 +14,4 @@ fn start() {
     //liverserver's url
     main_renderer.getter(url, false);
 
-    // dbg!(&resized);
-    // let termml_vec = construct_termml_vec(parsedml.clone(), hash.clone());
-    // dbg!(termml_vec);
-    // let renderer = renderer::debug::ren_debug::DebugRenderer;
-
-    // renderer.entry(vec);
-    // dbg!(styles_hash());
 }

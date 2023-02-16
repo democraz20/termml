@@ -169,6 +169,7 @@ impl MainNavigator {
             if event::poll(Duration::from_millis(1000))? {
                 if let Event::Key(event) = event::read()? {
                     match event {
+                        //exit /terminate
                         KeyEvent {
                             code: KeyCode::Char('c'),
                             modifiers: event::KeyModifiers::CONTROL,
@@ -187,21 +188,25 @@ impl MainNavigator {
                             Self::cleanup()?;
                             break;
                         }
+                        //buffer manipulation
                         KeyEvent {
                             code: KeyCode::Up, ..
                         } => {
+                            Self::print_buf(bodys.clone());
                             if line_index >= 1 {
                                 line_index -= 1;
                                 println!("line_index: {}", line_index);
                             } else if line_index == 0 {
                                 println!("line_index: {}", line_index);
                             }
+                            
                             //navigation code, call re write buffer
                         }
                         KeyEvent {
                             code: KeyCode::Down,
                             ..
                         } => {
+                            Self::print_buf(bodys.clone());
                             line_index += 1;
                             println!("line_index: {}", line_index);
                             //navigation code, call re write buffer
@@ -214,6 +219,12 @@ impl MainNavigator {
         }
         println!("Running cleanup code");
         Ok(())
+    }
+    fn print_buf(buf: Vec<Div>) {
+        Self::clear_screen();
+        for i in buf {
+            print!("[{}] : [{}]\n", i.value, i.class.unwrap_or("None".into()));
+        }
     }
     pub fn resize_markup(original: Vec<Div>, width: u16) -> Vec<Div> {
         let mut new_vec: Vec<Div> = vec![];
