@@ -4,7 +4,7 @@ use crossterm::{
     event::{self, KeyCode, KeyEvent},
     execute,
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
-    Result,
+    Result, style,
 };
 use debug::logger::Logger;
 use hard_xml::{XmlRead, XmlWrite};
@@ -17,7 +17,7 @@ use web_parser::{
     },
 };
 
-use std::{collections::HashMap, io::stdout, time::Duration};
+use std::{collections::HashMap, io::stdout, time::Duration, hash::Hash};
 
 use crate::defaults::fetch_error;
 use crate::request::webrequest::fetch;
@@ -192,7 +192,7 @@ impl MainNavigator {
                         KeyEvent {
                             code: KeyCode::Up, ..
                         } => {
-                            Self::print_buf(bodys.clone());
+                            Self::print_buf(bodys.clone(), &stylemap);
                             if line_index >= 1 {
                                 line_index -= 1;
                                 println!("line_index: {}", line_index);
@@ -206,7 +206,7 @@ impl MainNavigator {
                             code: KeyCode::Down,
                             ..
                         } => {
-                            Self::print_buf(bodys.clone());
+                            Self::print_buf(bodys.clone(), &stylemap);
                             line_index += 1;
                             println!("line_index: {}", line_index);
                             //navigation code, call re write buffer
@@ -220,9 +220,19 @@ impl MainNavigator {
         println!("Running cleanup code");
         Ok(())
     }
-    fn print_buf(buf: Vec<Div>) {
+    fn print_buf(buf: Vec<Div>, map: &HashMap<String, StyleChild>) {
         Self::clear_screen();
         for i in buf {
+            match i.class.clone() {
+                Some(class) => {
+                    let k: String = class.into();
+                    let c = map.get(&k);
+                    let style = c.cloned();
+                }
+                None => {
+
+                }
+            }
             print!("[{}] : [{}]\n", i.value, i.class.unwrap_or("None".into()));
         }
     }
