@@ -13,11 +13,11 @@ use web_parser::{
     process_string::bond,
     static_data::{
         self,
-        structs::{Div, ReqPair, StyleChild, StyleMain, TermmlMain},
+        structs::{Div, ReqPair, StyleChild, StyleMain, TermmlMain}, term_style::get_color_from_string,
     },
 };
 
-use std::{collections::HashMap, io::stdout, time::Duration, hash::Hash};
+use std::{collections::HashMap, io::stdout, time::Duration};
 
 use crate::defaults::fetch_error;
 use crate::request::webrequest::fetch;
@@ -228,13 +228,43 @@ impl MainNavigator {
                     let k: String = class.into();
                     let c = map.get(&k);
                     let style = c.cloned();
+                    match style {
+                        Some(style) => Self::print_style(i.value.to_string(), style),
+                        None => println!("{}", i.value)
+                    }
                 }
-                None => {
-
+                None => println!("{}", i.value)
+            }
+            // print!("[{}] : [{}]\n", i.value, i.class.unwrap_or("None".into()));
+        }
+    }
+    fn print_style(text: String, style: StyleChild) {
+        let mut s = ansi_term::Style::new();
+        match style.background {
+            Some(b) => s = s.on(get_color_from_string(b)),
+            _ => {}
+        }
+        match style.foreground {
+            Some(b) => s = s.fg(get_color_from_string(b)),
+            _ => {}
+        }
+        match style.underline {
+            Some(b) => {
+                if b {
+                    s = s.underline()
                 }
             }
-            print!("[{}] : [{}]\n", i.value, i.class.unwrap_or("None".into()));
+            _ => {}
         }
+        match style.bold {
+            Some(b) => {
+                if b {
+                    s = s.bold()
+                }
+            }
+            _ => {}
+        }
+        println!("{}", s.paint(text));
     }
     pub fn resize_markup(original: Vec<Div>, width: u16) -> Vec<Div> {
         let mut new_vec: Vec<Div> = vec![];
