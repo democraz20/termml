@@ -192,7 +192,7 @@ impl MainNavigator {
                         KeyEvent {
                             code: KeyCode::Up, ..
                         } => {
-                            Self::print_buf(bodys.clone(), &stylemap);
+                            Self::print_buf(&bodys, &stylemap);
                             if line_index >= 1 {
                                 line_index -= 1;
                                 println!("line_index: {}", line_index);
@@ -206,7 +206,7 @@ impl MainNavigator {
                             code: KeyCode::Down,
                             ..
                         } => {
-                            Self::print_buf(bodys.clone(), &stylemap);
+                            Self::print_buf(&bodys, &stylemap);
                             line_index += 1;
                             println!("line_index: {}", line_index);
                             //navigation code, call re write buffer
@@ -220,7 +220,7 @@ impl MainNavigator {
         println!("Running cleanup code");
         Ok(())
     }
-    fn print_buf(buf: Vec<Div>, map: &HashMap<String, StyleChild>) {
+    fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) {
         Self::clear_screen();
         for i in buf {
             match i.class.clone() {
