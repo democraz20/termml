@@ -5,7 +5,6 @@ Currently, the plan for the project is an alternative the traditional web browse
 * ["renderer"](#termml-renderer)
 * * [Termml (Markup)](#termmarkup)
 * * [TSS (Style sheet)](#termstylesheet)
-* * [TermSC (Scripting)](#termscripting)
 * [navigator/browser](#navigator)
 * [protocol of choice](#protocol)
 * [hosting/server](#hostingserver)
@@ -30,5 +29,3 @@ same as above
 ### TermMarkUp
 
 ### TermStyleSheet
-
-### TermScripting
