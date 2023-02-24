@@ -1,4 +1,5 @@
 pub mod defaults;
+pub mod term_style;
 pub mod structs {
     #![allow(unused_must_use)]
     use hard_xml::{XmlRead, XmlWrite};
@@ -86,4 +87,3 @@ pub mod structs {
         pub value: String,
     }
 }
-pub mod term_style;
