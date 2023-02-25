@@ -11,16 +11,16 @@ Currently, the plan for the project is an alternative the traditional web browse
 
 
 ### Termml renderer 
-seperated crate being worked on, possible with cargo workspaces
-this would be modular, other people would be able to develop
-their own renderer or browser environment that would be using 
-termml's parser 
+seperated crate being worked on, possible with cargo workspaces </br>
+this would be modular, other people would be able to develop </br>
+their own renderer or browser environment that would be using </br>
+termml's parser </br>
 
 ### Navigator
 basically the same as the ["renderer"](#termml-renderer) section 
 
 ### protocol 
-standard http or any protocol that could transfer small files 
+standard http or any protocol that could transfer small files </br>
 this could be modified with the uses of custom ["renderer"](#termml-renderer) or [navigator/browser](#navigator)
 
 ### hosting/server
