@@ -205,6 +205,8 @@ impl MainNavigator {
     }
     fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) {
         Self::clear_screen();
+        print!("\n\n");
+        //two lines up top for header and url box
         for i in buf {
             match i.class.clone() {
                 Some(class) => {
