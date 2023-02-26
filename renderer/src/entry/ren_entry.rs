@@ -36,9 +36,7 @@ impl Drop for CleanUp {
 impl MainNavigator {
     pub fn getter(&self, server_url: String, dbg: bool) {
         let mut files: HashMap<String, String> = HashMap::new();
-        // let server_url = String::from("http://127.0.0.1:5500/");
         let url = format!("{}{}", server_url, "test.termml");
-        // let _filename = get_filename(&url);
         let mut termss_vec: Vec<String> = vec![];
         let fetched = match fetch(&url) {
             Ok(r) => r,
@@ -145,21 +143,6 @@ impl MainNavigator {
                         buf.push(termml.body.value[i as usize].clone());
                         logger.add(&format!("{}", termml.body.value[i as usize].value.clone()));
                     }
-                    //for how many rows there are on the screen
-                    //making sure the indexes dont go beyond buffer len
-                    //including when it is iterating
-
-                    // println!("{:?},{:?}",
-                    // line_index < buf.len() as u32,
-                    // (line_index+1) < buf.len() as u32);
-                    // println!("index: {}, buflen: {}", line_index, buf.len());
-                    // println!("c    : {}, r     : {}", c, r);
-                    // if line_index < buf.len() as u32
-                    // {
-                    //     buf.push(termml.body.value[i as usize].clone());
-                    //     logger.add(&format!("{}", termml.body.value[i as usize].value.clone()));
-                    //     println!("pushed: {}", termml.body.value[i as usize].value.clone());
-                    // }
                 }
                 logger.save()?;
                 if line_index > buf.len() as u32 {
@@ -235,7 +218,6 @@ impl MainNavigator {
                 }
                 None => println!("{}", i.value)
             }
-            // print!("[{}] : [{}]\n", i.value, i.class.unwrap_or("None".into()));
         }
     }
     fn print_style(text: String, style: StyleChild) {
