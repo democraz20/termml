@@ -203,6 +203,12 @@ impl MainNavigator {
         println!("Running cleanup code");
         Ok(())
     }
+    fn print_header(div: &Div, map: &HashMap<String, StyleChild>) {
+        //check for div size to not exceed screen's 
+        //set cursor to second line
+        //print
+
+    }
     fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) {
         Self::clear_screen();
         print!("\n\n");
