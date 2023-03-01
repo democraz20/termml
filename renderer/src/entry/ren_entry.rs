@@ -203,11 +203,24 @@ impl MainNavigator {
         println!("Running cleanup code");
         Ok(())
     }
-    fn print_header(div: &Div, map: &HashMap<String, StyleChild>) {
+    fn print_header(div: &Div, map: &HashMap<String, StyleChild>, columns: u16) {
         //check for div size to not exceed screen's 
         //set cursor to second line
         //print
-
+        if div.value.len() <= columns as usize {
+            match div.class.clone() {
+                Some(class) => {
+                    let k: String = class.into();
+                    let c = map.get(&k);
+                    let style = c.cloned();
+                    match style {
+                        Some(style) => Self::print_style(div.value.to_string(), style),
+                        None => println!("{}", div.value)
+                    }
+                }
+                None => println!("{}", div.value)
+            }
+        }
     }
     fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) {
         Self::clear_screen();
