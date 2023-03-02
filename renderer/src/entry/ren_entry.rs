@@ -208,6 +208,8 @@ impl MainNavigator {
         //set cursor to second line
         //print
         if div.value.len() <= columns as usize {
+            execute!(stdout(), MoveTo(0, 1)).unwrap();
+            //unwrap is fine... right?
             match div.class.clone() {
                 Some(class) => {
                     let k: String = class.into();
