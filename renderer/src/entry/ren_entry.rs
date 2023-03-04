@@ -225,7 +225,7 @@ impl MainNavigator {
         }
         Ok(())
     }
-    fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) {
+    fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) -> Result<()>{
         Self::clear_screen();
         print!("\n\n");
         //two lines up top for header and url box
@@ -243,6 +243,7 @@ impl MainNavigator {
                 None => println!("{}", i.value)
             }
         }
+        Ok(())
     }
     fn print_style(text: String, style: StyleChild) {
         let mut s = ansi_term::Style::new();
