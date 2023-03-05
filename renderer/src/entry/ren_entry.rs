@@ -175,7 +175,7 @@ impl MainNavigator {
                         KeyEvent {
                             code: KeyCode::Up, ..
                         } => {
-                            Self::print_buf(&bodys, &stylemap);
+                            Self::print_buf(&bodys, &stylemap)?;
                             if line_index >= 1 {
                                 line_index -= 1;
                                 println!("line_index: {}", line_index);
@@ -189,7 +189,7 @@ impl MainNavigator {
                             code: KeyCode::Down,
                             ..
                         } => {
-                            Self::print_buf(&bodys, &stylemap);
+                            Self::print_buf(&bodys, &stylemap)?;
                             line_index += 1;
                             println!("line_index: {}", line_index);
                             //navigation code, call re write buffer
@@ -227,8 +227,8 @@ impl MainNavigator {
     }
     fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) -> Result<()>{
         Self::clear_screen();
-        print!("\n\n");
         //two lines up top for header and url box
+        execute!(stdout(), MoveTo(0, 2))?;
         for i in buf {
             match i.class.clone() {
                 Some(class) => {
