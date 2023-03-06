@@ -175,6 +175,7 @@ impl MainNavigator {
                         KeyEvent {
                             code: KeyCode::Up, ..
                         } => {
+                            Self::print_header(&head, &stylemap, c)?;
                             Self::print_buf(&bodys, &stylemap)?;
                             if line_index >= 1 {
                                 line_index -= 1;
@@ -189,6 +190,7 @@ impl MainNavigator {
                             code: KeyCode::Down,
                             ..
                         } => {
+                            Self::print_header(&head, &stylemap, c)?;
                             Self::print_buf(&bodys, &stylemap)?;
                             line_index += 1;
                             println!("line_index: {}", line_index);
