@@ -225,6 +225,10 @@ impl MainNavigator {
                 None => println!("{}", div.value)
             }
         }
+        else {
+            let v = Self::resize_markup(vec![div.clone()], columns);
+            let title = v[0].clone();
+        }
         Ok(())
     }
     fn print_buf(buf: &Vec<Div>, map: &HashMap<String, StyleChild>) -> Result<()>{
