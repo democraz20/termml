@@ -228,6 +228,18 @@ impl MainNavigator {
         else {
             let v = Self::resize_markup(vec![div.clone()], columns);
             let title = v[0].clone();
+            match title.class.clone() {
+                Some(class) => {
+                    let k: String = class.into();
+                    let c = map.get(&k);
+                    let style = c.cloned();
+                    match style {
+                        Some(style) => Self::print_style(div.value.to_string(), style),
+                        None => println!("{}", title.value)
+                    }
+                }
+                None => println!("{}", div.value)
+            }
         }
         Ok(())
     }
